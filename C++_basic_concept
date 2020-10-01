@@ -1,0 +1,45 @@
+/* C++ Development Environment Basic
+ *  Text editor: source code file
+ *  The extension helps the compiler to identify the files
+ *  Cpp compiler: converts high level -> machine understandable low-level
+ * #directive:
+ *  #include tells compiler to include a file
+ * using namespace std:
+ *  Import the entirety of the std namespace into current namespace
+ *  The std namespace is huge. The alternative is to specify the namespace using the scope operator(::) each time we
+ *  declare a type.
+ * std::cout: standard character output device
+ * void main(){ } is not accepted. A conforming implement accepts:
+ *  int main() { }
+ *  int main(int argc, char* argv[]){ }
+ * Data types -> 3 types:
+ *  Primitive Data Types: built-in eg. int, char, float, bool, double float, void, wild character etc
+ *      Question: wild character -> wildcard character, like *, ?, [] sizeof (wchar_t) = 2-4 bytes
+ *  Derived data types: function, array, pointer, reference
+ *  Abstract or user-defined data types: struct, class, union, enumeration, typedef defined data type
+ *      Question:
+ *      Union: untagged union are expressed nearly exactly like structs, but each data member begins
+ *      at the same location in mem
+ *      Typedef: give a type a new name, eg.
+ *      typedef unsigned char BYTE
+ * Input/Output:
+ *  iostream: cin, cout, cerr;
+ *  iomanip: input/output manipulator, setw, setprecision
+ *  fstream: handle the data being read from a file as input, or data being written into the file as output.
+ *  Question: Un-buffered standard error stream (cerr)-> output error message immediately
+ *            Buffered standard error stream (clog) -> store in the buffer before display errors
+ *  Exceed valid range of built-in date types
+ */
+/*#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    for (char a = 0; a <= 225; a++)
+        cout << a;
+    return 0;
+}
+ * It becomes an indefinitely loop. When 'a' become 128, the range is exceeded and as a result the first number
+ * from negative side of the range gets assigned to a. (a<=225) is satisfied and control remains in loop.
+ */
