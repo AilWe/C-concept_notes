@@ -1,0 +1,36 @@
+/* Object Oriented Programming in C++
+ *  inheritance, hiding, polymorphism, packing (bind together the data and the functions)
+ *  Class: user-defined data type, data members and member functions
+ *      used by creating an instance of that class
+ *  Object: identifiable entity with some characteristics and behavior.
+ *      an instance of a Class
+ *      When class is defined, no memory is allocate but when it is instantiated, memory is allocated.
+ *      Object can interact without having to know details of each other's data or code as long as it know passing value
+ *      and return value.
+ *   Encapsulation:
+ *      binding together the data and the function that manipulate them
+ *      Encapsulation lead to data abstraction or hiding (private).
+ *   Abstract:
+ *      Displaying only essential information and hiding the details.
+ *          Data abstraction -> providing only essential information about the data to the outside world
+ *          hiding the background details or implementation.
+ *              Two types of abstraction:
+ *                  using Classes: private, public
+ *                  in header files
+ *   Polymorphism:
+ *     An operation may exhibit different behaviours in different instances.
+ *     The behavior depends upon the types of data used in the operation.
+ *      Overloading:
+ *          Two types:
+ *              Operator overloading
+ *              Function overloading
+ *   Inheritance:
+ *      The capability of a class to derive properties and characteristics from another class
+ *      Sub Class: inherit properties from another class
+ *      Super Class (Base Class): whose properties are inherited by sub class
+ *      Reusability: derive new class from the existing class, reuse the field and methods of the existing class
+ *      Dynamic Binding: the code to be executed in response to function call is decided at runtime
+ *      Message Passing: objects communicate with one another by sending and receiving information to each other
+ *
+
+ */
