@@ -1,0 +1,523 @@
+/* C++ Development Environment Basic
+ *  Text editor: source code file
+ *  The extension helps the compiler to identify the files
+ *  Cpp compiler: converts high level -> machine understandable low-level
+ *
+ * #directive:
+ *  #include tells compiler to include a file
+ *
+ * using namespace std:
+ *  Import the entirety of the std namespace into current namespace
+ *  The std namespace is huge. The alternative is to specify the namespace using the scope operator(::) each time we
+ *  declare a type.
+ * std::cout: standard character output device
+ * void main(){ } is not accepted. A conforming implement accepts:
+ *  int main() { }
+ *  int main(int argc, char* argv[]){ }
+ *
+ * Data types -> 3 types:
+ *  Primitive Data Types: built-in eg. int, char, float, bool, double float, void, wild character etc
+ *      Question: wild character -> wildcard character, like *, ?, [] sizeof (wchar_t) = 2-4 bytes
+ *  Derived data types: function, array, pointer, reference
+ *  Abstract or user-defined data types: struct, class, union, enumeration, typedef defined data type
+ *      Question:
+ *      Union: untagged union are expressed nearly exactly like structs, but each data member begins
+ *      at the same location in mem
+ *      Typedef: give a type a new name, eg.
+ *      typedef unsigned char BYTE
+ *
+ * Input/Output:
+ *  iostream: cin, cout, cerr;
+ *  iomanip: input/output manipulator, setw, setprecision
+ *  fstream: handle the data being read from a file as input, or data being written into the file as output.
+ *  Question: Un-buffered standard error stream (cerr)-> output error message immediately
+ *            Buffered standard error stream (clog) -> store in the buffer before display errors
+ *  Exceed valid range of built-in date types
+ */
+/*#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    for (char a = 0; a <= 225; a++)
+        cout << a;
+    return 0;
+}
+ * It becomes an indefinitely loop. When 'a' become 128, the range is exceeded and as a result the first number
+ * from negative side of the range gets assigned to a. (a<=225) is satisfied and control remains in loop.
+ */
+/* When cross the range of 'bool':
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    // declaring Boolean
+    // variable with true value
+    bool a = true;
+
+    for (a = 1; a <= 5; a++)
+        cout << a;
+
+    return 0;
+}
+ * When a = 2 -> 1 assigned to 'a', a<=5 satisfied
+ */
+/* when cross range of 'short':
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    // declaring short variable
+    short a;
+
+    for (a = 32767; a < 32770; a++)
+        cout << a << "\n";
+
+    return 0;
+}
+ * infinite loop. When a = 32768, -32768 assign to a. a < 32770 is satisfied.
+ */
+/* When cross range of 'unsigned short':
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    unsigned short a;
+
+    for (a = 65532; a < 65536; a++)
+        cout << a << "\n";
+
+    return 0;
+}
+ * Indefinite loop, when a = 65536, 0 is assigned to a. a < 65536 is satisfied.
+ * 2's complement. add 1 is 10...0, it become the largest negative number.
+ */
+
+/* C++ preprocessors
+ * .cpp -> .obj -> .exe
+ * preprocessor directive begin with a '#'hash symbol, providing a path for preprocessor. eg. #include, #define, #ifndef
+ * preprocessor directives 4 types:
+ *  macros: # define, the compiler replaces the name with the actual piece of code,
+ *      #include <iostream>
+        #define AREA(l, b) (l * b) // similar as function
+        int main()
+        {
+            int l1 = 10, l2 = 5, area;
+
+            area = AREA(l1, l2);
+
+            std::cout << "Area of rectangle is: " << area;
+
+            return 0;
+        }
+ *  file inclusion: header file or standard files & user defined files
+ *  conditional compilation: decide whether skip compilation
+ *      #ifdef macro_name
+ *          statement1;
+ *          statement2;
+ *          statement3;
+ *          .
+ *          .
+ *          .
+ *          statementN;
+ *      #endif
+ *  other directives
+ *      #under Directive:  undefine an existing #ifdef macro
+ *      #pragma Directive: used to turn on or off some feature, compiler-specific
+ *
+ * Operator:
+ *  Arithmetic operators: unary operator (++, --); binary operator (+, -, *, /)
+ *  Relational operators: ==, >=, <=
+ *  Logical Operators: result in a boolean value, eg, &&, ||
+ *  Bitwise Operators: &, |, <<, >>(logical shift)
+ *  Assignment Operators: =, +=, -=, *=, /=
+ *  Other Operators: sizeof (result of size of is unsigned int),; (lowest precedence), ?:(True, return Expression2,
+ *  False, return Exps3)
+ * Loops two types:
+ *  Entry controlled loops: test first, enter next. eg. for loop and while loop
+ *  Exit controlled loops: enter first, test at the end. eg. do-while loop
+ *  For loops:
+ *      know the number of interations of loop; initialization expression; test expression; update expression
+ *  While loops:
+ *      do not know the number of iterations of loop
+ *  Do-while loop:
+ *      do-while loo[ condition is tested at the end of loop body
+ *      Notice the semi-colon';' in the end of loop
+ *  Infinite loop
+ *
+ * Decision making: if ... else ..., nested if, if-else-if ladder, jump statement (break, continue, go to, return)
+ *
+ * Execute both if and else statement in C++ simultaneously
+ *  Use goto statement, providing an unconditional jump from the 'goto' to a labelled statement in the same function
+ */
+/*#include <stdio.h>
+int main()
+{
+    if (1) //Replace 1 with 0 and see the magic
+    {
+        label_1: printf("Hello ");
+
+        // Jump to the else statement after
+        // executing the above statement
+        goto label_2;
+    }
+    else
+    {
+        // Jump to 'if block statement' if
+        // the Boolean condition becomes false
+        goto label_1;
+
+        label_2: printf("Geeks");
+    }
+    return 0;
+}*/
+
+/* Compile
+ *  check a program compiled with sizeof(size_t)
+ *  Question:
+ *      size_t: unsigned int
+ *
+ * Switch Statement
+ *  switch(n){
+ *   case 1://if n = 1; break;
+ *   case 2://if n = 2; break;
+ *   default://n does't match any cases
+ *  }
+ *  The switch should be provided with constant value
+ *  Duplicate case are not allowed
+ *  Default statement is optional
+ *  break; is needed but is optional
+ *  nesting switch are allowed
+ *
+ * Functions
+ *  Actual parameter
+ *  Formal parameter
+ *  Two way of passing parameter
+ *      passing by value -> deep copy
+ *      passing by reference -> shallow copy
+ */
+/* #include <iostream>
+using namespace std;
+
+void fun(int *ptr)
+{
+    *ptr = 30;
+}
+
+int main() {
+    int x = 20;
+    fun(&x);
+    cout << "x = " << x;
+
+    return 0;
+}*/
+/*  Even the void can be stoped with a return;
+ *  functions can return any type except arrays and function
+ *  void func(void): Empty parameter list
+ *  if called before declaration, the C compiler auto declare it in : int function name();
+ *  Main Function: the entry point for the program
+ *      Type 1:
+ *          int main(){
+ *              ...
+ *              return 0;
+ *          }
+ *      Type 2:
+ *          int main(int argc, char *const argv[]){
+ *              ...
+ *              return 0;
+ *          }
+ *
+ *  Array: stored at contiguous memory, same type for all element, eg, int, float, double, char, structure & pointer
+ *   Array declaration by size, initializing element, size & initializing elements.
+ *   No index out of bound checking
+ *   vectors in C++ represents an array
+ *   vectors vs normal array:
+ *   no pass size as an extra parameter, it support dynamic sizes
+ *   vectors hae built-in function
+ *
+ *  String class
+ *     The length of the C++ string can be change at runtime similar to vectors
+ */
+/*
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    // various constructor of string class
+
+    // initialization by raw string
+    string str1("first string");
+
+    // initialization by another string
+    string str2(str1);
+
+    // initialization by character with number of occurrence
+    string str3(5, '#');
+
+    // initialization by part of another string
+    string str4(str1, 6, 6); //    from 6th index (second parameter)
+    // 6 characters (third parameter)
+
+    // initialization by part of another string : iteartor version
+    string str5(str2.begin(), str2.begin() + 5);
+
+    //cout << str1 << endl;
+    //cout << str2 << endl;
+    //cout << str3 << endl;
+    //cout << str4 << endl;
+    //cout << str5 << endl;
+//  assignment operator
+    string str6 = str4;
+
+    // clear function deletes all character from string
+    str4.clear();
+
+    //  both size() and length() return length of string and
+    //  they work as synonyms
+    int len = str6.length(); // Same as "len = str6.size();"
+
+    //cout << "Length of string is : " << len << endl;
+    // a particular character can be accessed using at /
+    // [] operator
+    char ch = str6.at(2); //  Same as "ch = str6[2];"
+
+
+    //cout << "third character of string is : " << ch << endl;
+    //  front return first character and back returns last character
+    //  of string
+
+    char ch_f = str6.front();  // Same as "ch_f = str6[0];"
+    char ch_b = str6.back();   // Same as below
+    // "ch_b = str6[str6.length() - 1];"
+
+    //cout << "First char is : " << ch_f << ", Last char is : "
+         //<< ch_b << endl;
+    // c_str returns null terminated char array version of string
+    const char* charstr = str6.c_str();
+    printf("%s\n", charstr);
+
+    // append add the argument string at the end
+    str6.append(" extension");
+    //  same as str6 += " extension"
+
+    // another version of append, which appends part of other
+    // string
+    str4.append(str6, 0, 6);  // at 0th position 6 character
+
+    //cout << str6 << endl;
+    //cout << str4 << endl;
+    //  find returns index where pattern is found.
+    //  If pattern is not there it returns predefined
+    //  constant npos whose value is -1
+
+    //if (str6.find(str4) != string::npos)
+        //cout << "str4 found in str6 at " << str6.find(str4)
+        //     << " pos" << endl;
+    //else
+        //cout << "str4 not found in str6" << endl;
+    //  substr(a, b) function returns a substring of b length
+    //  starting from index a
+    //cout << str6.substr(7, 3) << endl;
+
+    //  if second argument is not passed, string till end is
+    // taken as substring
+    //cout << str6.substr(7) << endl;
+
+    //  erase(a, b) deletes b characters at index a
+    str6.erase(7, 4);
+    //cout << str6 << endl;
+    //  iterator version of erase
+    str6.erase(str6.begin() + 5, str6.end() - 3);
+    //cout << str6 << endl;
+    str6 = "This is a examples";
+
+    //  replace(a, b, str)  replaces b characters from a index by str
+    str6.replace(2, 7, "ese are test");
+
+    cout << str6 << endl;
+    return 0;
+}
+ Question:
+    string::npos -> maximum value for size_t, means until the end of the string*/
+/*  += vs append():
+ *      += is slower than append() bc each time + is called a new string -> overhead
+ */
+
+// C++ program to demonstrate uses of some string function
+/*#include <bits/stdc++.h>
+using namespace std;
+
+// this function returns floating point part of a number-string
+string returnFloatingPart(string str)
+{
+    int pos = str.find(".");
+    if (pos == string::npos)
+        return "";
+    else
+        return str.substr(pos + 1);
+}
+
+// This function checks whether a string contains all digit or not
+bool containsOnlyDigit(string str)
+{
+    int l = str.length();
+    for (int i = 0; i < l; i++)
+    {
+        if (str.at(i) < '0' || str.at(i) > '9')
+            return false;
+    }
+    //  if we reach here all character are digits
+    return true;
+}
+
+// this function replaces all single space by %20
+// Used in URLS
+string replaceBlankWith20(string str)
+{
+    string replaceby = "%20";
+    int n = 0;
+
+    // loop till all space are replaced
+    while ((n = str.find(" ", n)) != string::npos )
+    {
+        str.replace(n, 1, replaceby);
+        n += replaceby.length();
+    }
+    return str;
+}
+
+// driver function to check above methods
+int main()
+{
+    string fnum = "23.342";
+    cout << "Floating part is : " << returnFloatingPart(fnum)
+         << endl;
+
+    string num = "3452";
+    if (containsOnlyDigit(num))
+        cout << "string contains only digit" << endl;
+
+    string urlex = "google com in";
+    cout << replaceBlankWith20(urlex) << endl;
+
+    return 0;
+}*/
+
+/* Pointer
+ * & (ampersand) return the address of variable -> reference
+ * * (asterisk) declare a pointer variable -> dereference
+ * Pointer arithmetic operation: ++, --, + or +=, - or -=
+ * Pointers and multidimensional arrays
+ *  2D array nums: nums[i][j] -> *(*(nums+i)+j)
+ *  *(*nums): nums[0][0]
+ *  *(*nums + 1): nums[0][1]
+ *  *(*nums + 2): nums[0][2]
+ *  *(*(nums + 1)): nums[1][0]
+ *  *(*(nums + 1) + 1): nums[1][1]
+ *  *(*(nums + 1) + 2): nums[1][2]
+ *
+ * References
+ *  alternative name for an existing variable
+ *  application:
+ *      Modify the passed parameter in a function
+ *      Avoiding copy of large structure
+ *      In for each loop to modify all objects
+ *      Question:
+ *          auto: the type of variable declared automatically deduced from initializer or return value/
+ * References vs pointers
+ *  A pointer can be declared as void but a reference can never be void
+ *  Reference are less powerful than pointers
+ *      Once a reference is created, it cannot be reseated
+ *      References cannot be NULL
+ *      A reference must be initialized when declared
+ *  References are safer and easier to use:
+ *      Reference must be initialized, wild reference are unlikely to exist
+ *      Reference don't need dereferencing operator to access the value
+ *      object reference access with "."; pointers access with "->"
+ */
+
+/*#include<iostream>
+using namespace std;
+
+int &fun()
+{
+    static int x = 10;
+    return x;
+}
+int main()
+{
+    fun() = 30;
+    cout << fun();
+    return 0;
+}
+ // change the value
+*/
+/*#include<iostream>
+using namespace std;
+
+int fun(int &x)
+{
+    return x;
+}
+int main()
+{
+    int a = 10;
+    cout << fun(a);
+    return 0;
+}
+// can not have statement like fun(10), & need to & a variable
+*/
+
+/*#include<iostream>
+using namespace std;
+
+void swap(char * &str1, char * &str2)
+{
+    char *temp = str1;
+    str1 = str2;
+    str2 = temp;
+}
+
+int main()
+{
+    char *str1 = "GEEKS";
+    char *str2 = "FOR GEEKS";
+    swap(str1, str2);
+    cout<<"str1 is "<<str1<<endl;
+    cout<<"str2 is "<<str2<<endl;
+    return 0;
+}*/
+/*#include<iostream>
+using namespace std;
+
+int main()
+{
+    int *ptr = NULL;
+    int &ref = *ptr;
+    cout << ref;
+}
+//pointer to a empty, ref to a empty pointer.
+*/
+/*#include<iostream>
+using namespace std;
+
+int &fun()
+{
+    int x = 10;
+    return x;
+}
+int main()
+{
+    fun() = 30;
+    cout << fun();
+    return 0;
+}
+// need to a static, to gets allocated for the lifetime of the program
+*/
