@@ -1,0 +1,160 @@
+/* Dynamic memory allocation
+ *  Performing memory allocation manually by programmer
+ *  Dynamically allocated memory is allocated on Heap
+ *  Non-static and local variables get memory allocated on Stack
+ *      Allocate memory of variable size
+ *      Flexibility
+ *  Memory allocation vs normal variables
+ *   normal variable: memory automatically allocated and deallocated
+ *   Memory allocation:
+ *      int *p = new int[10];
+ *      It is programmers responsibility to     deallocate memory when no longer needed.
+ *      If programmer doesn't deallocate memory, it cause memory leak.
+ *  malloc() and calloc()
+ *      allocate memory dynamically at run time
+ *  free()
+ *      free dynamically allocated memory
+ *  new and delete -> allocating and freeing the memory in easier way
+ *  new operator
+ *      denote a request for memory allocation on the Free Store. initialize the memory to the pointer variable
+ *      and returns the address of the newly allocated
+ *      if enough memory is not availbale in the heap to allocate, the new request indicates failure by throwing
+ *      an exception of type std::bad_alloc
+ *      in this case, if int *p = new(nothrow) int;, it will return a NULL pointer
+ *  delete operator
+ *      free the dynamically allocated memory
+ * malloc() vs new
+ *  Calling constructor -> new: calls constructor ; malloc() does not
+ *  Operator vs function -> new: operator; malloc(): a function
+ *  Return type -> new: return exact data type; malloc() return void *
+ *  Failure -> new: throw bad_alloc exception; malloc(): return NULL
+ *  Memory -> new: free store; malloc(): heap
+ *  Overriding -> new: can be override; malloc(): cannot override
+ *  Size -> new: calculate required size of memory by compiler; malloc(): mannually calculate size
+ *  Buffer Size -> new: doesn't allow to change the size of buffer; malloc(): allows to change the size of buffer
+ * delete and free()
+ *  delete used for the pointer pointing to the memory allocated using new
+ *  free() pointer pointing to the memory allocated using malloc()
+ */
+/*#include<stdio.h>
+#include<stdlib.h>
+int main()
+{
+    int x;
+    int *ptr1 = &x;
+    int *ptr2 = (int *)malloc(sizeof(int));
+    int *ptr3 = new int;
+    int *ptr4 = NULL;
+
+    /* delete Should NOT be used like below because x is allocated
+        on stack frame */
+//delete ptr1;
+
+/* delete Should NOT be used like below because x is allocated
+    using malloc() */
+//delete ptr2;
+
+/* Correct uses of delete */
+//delete ptr3;
+//delete ptr4;
+
+//getchar();
+//return 0;
+//}
+/* std::get_temporary_buffer in STLlib
+ *  pass a size n
+ *  return the largest available buffer up to size n which can be fit into physical memory
+ *  get a memory for some algorithms required extra space to perform
+ *  release by return_temporary_buffer
+ *  pair(int *, ptrdiff_t) p = get_temporary_buffer(int)(required size)
+ *     if memory allocated the first contains the pointer to the first element, the second contain the size
+ *     if memory block is not allocated than NULL pointer to first pair, second contains zero
+ * */
+// CPP code to demonstrate the get_temporary_buffer
+// to sort an array
+/*
+#include <iostream>
+#include <algorithm>
+#include <memory>
+using namespace std;
+void sorting(int b[], int n)
+{
+    int i, c = 0;
+    for (i = 0; i < n; i++) {
+        if (b[i] % 2 == 0) {
+            c++;
+        }
+    }
+    cout << "The total even numbers are:  " << c << endl;
+    cout << "original array :"
+         << " ";
+    cout << "\n";
+    for (i = 0; i < 10; i++) {
+        cout << b[i] << " ";
+    }
+    cout << "\n";
+    pair<int*, ptrdiff_t> p = get_temporary_buffer<int>(10);
+
+    // copy the contents in temporary buffer with pair
+    uninitialized_copy(b, b + p.second, p.first);
+
+    sort(p.first, p.first + p.second);
+
+    cout << "sorted array :" << endl;
+    for (i = 0; i < p.second; i++) {
+        cout << p.first[i] << " ";
+    }
+}
+// driver program to test above function
+int main()
+{
+    int b[] = { 8, 9, 2, 1, 10, 14, 37, 18, 17, 5 };
+    int n = sizeof(b) / sizeof(b[0]);
+    sorting(b, n);
+    return 0;
+}
+ * Question: uninitialized_copy?
+ *  Copies elements from the range [first, last) to an uninitialized memory area beginning at d_first
+ *  template< class InputIt, class ForwardIt >
+ *  ForwardIt uninitialized_copy( InputIt first, InputIt last, ForwardIt d_first );
+ * Question: sort?
+ *  emplate <class RandomAccessIterator>
+ *  void sort (RandomAccessIterator first, RandomAccessIterator last);
+ *  Sort the elements in the rage [first, last) into ascending order
+ */
+// CPP code to sort the characters
+// alphabetically using std::get_temporary_buffer
+#include <iostream>
+#include <algorithm>
+#include <memory>
+#include <string.h>
+using namespace std;
+void sorting(char b[], int n)
+{
+    int i;
+    pair<char*, ptrdiff_t> p = get_temporary_buffer<char>(n);
+
+    // copy the contents in temporary buffer with pair
+    uninitialized_copy(b, b + p.second, p.first);
+
+    // sort char array
+    sort(p.first, p.first + p.second);
+
+    cout << "sorted characters are :" << endl;
+    for (i = 0; i < p.second; i++) {
+        cout << p.first[i] << " ";
+    }
+
+    // to release the temporary buffer
+    return_temporary_buffer(p.first);
+}
+// driver program to test above function
+int main()
+{
+    char str[] = { 'b', 'g', 'y', 'v', 'p' };
+    int c;
+    c = strlen(str);
+
+    sorting(str, c);
+    return 0;
+}
