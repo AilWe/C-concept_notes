@@ -1,0 +1,37 @@
+/* Standard Template Library (STL)
+ *  Common programming data structure and functions: lists, stacks, arrays, container classes, algorithms and iterators.
+ *  Components are parameterized
+ *  4 components:
+ *      Algorithms
+ *          A collection of functions designed to be used on ranges of elements
+ *      Containers
+ *          Store objects and data. 7 standard "first-class" container classes & 3 container adaptor classes
+ *              Sequence Containers: accessed in a sequential manner
+ *                  vector, list, deque, arrays, forward_list
+ *              Container Adaptors: provide a different interface for sequential containers
+ *                  queue, priority_queue, stack
+ *              Associative Containers: implement sorted data structures can be quickly searches(O(log n) complexity)
+ *                  set, multiset, map, multimap
+ *              Unordered Associative Containers: implement unordered data structure that can be quickly searched
+ *                  unordered_set, unordered_multiset, unordered_map, unordered_multimap
+ *      Functions
+ *          Classes overload the function call operator
+ *      Iterations
+ *          Used for working upon a sequence of values
+ *      Utility library
+ *          Defined in header <utility>
+ *          Pair
+ * Sorting
+ *  sort(): it is implemented using hybrid of QuickSort, HeapSort and InsertionSort
+ *      default QuickSort
+ *      HeapSort: QuickSort doing unfair partitioning and taking more than N*logN time
+ *      InsertionSort: array size becomes really small
+ *      sort(startAddress, endAddress)
+ *
+ * Binary Searching:
+ *  keeping dividing the array in half until the element is found
+ *  Compare the middle item of the array with our target, it return true if matched.
+ *  If the middle term greater than target -> left sub-array
+ *  If the middle term less than target -> right sub-array
+ * binary_search (startAddress, endAddress, valueToFind)
+ */
