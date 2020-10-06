@@ -1,0 +1,41 @@
+/* Container
+ *  Pair in STL
+ *  Defined in <utility>
+ *  Consist of two data elements or object (first, second)
+ *  Used to combined together two (different type ) value -> tuple
+ *  Pair can be assigned, copied and compared.
+ *  Allocated in hash_map
+ *  Key: first; Value: second
+ *  pair (data_type1, data_type2) Pair_name
+ *  Initializing a pair:
+ *      pair g1; //default
+ *      pair g2(1, 'a'); // initialized, different data type
+ *      pair g3(1, 10); //initialized, same data type
+ *      pair g4(g3); //copy of g3
+ *      g2 = make_pair(1, 'a');//using make_pair function
+ */
+
+#include <iostream>
+#include <utility>
+using namespace std;
+
+int main()
+{
+    pair <string,double> PAIR2 ("GeeksForGeeks", 1.23);
+
+    cout << PAIR2.first << " " ;
+    cout << PAIR2.second << endl ;
+
+    return 0;
+} 
+/*  Default initilization is 0, 0
+ *  Member functions:
+ *      pairName = make_pair (value1, value2);
+ *      Operator (=, ==, !=, >=, <=)
+ *          =: assign new object
+ *              pair& operator = (const pair& pr);
+ *          == & != & >= & <= & > & <: compare the first value and second value of those two pairs
+ *      swap:
+ *          pair1.swap(pair2);
+ *          The pairs must be of same type
+ */
