@@ -117,3 +117,53 @@ int main()
         cout << v2[i] << " ";
 }
 */
+/* Copy a vector
+ *  Iterative method: general method
+ *      A loop is used to push_back() the old vector element into new vector
+ *      This is a deep copy method
+ *  "=" operator: deep copy
+ *      vect2 = vect1
+ *  Constructor: deep copy
+ *      vector<int> vect2(vect1)
+ *  Inbuilt function: deep copy
+ *      copy(first_iterator_o, last_iterator_o, back_inserter())
+ *      copy(vect1.begin(), vect1.end(), back_inserter(vect2))
+ *      assign(first_iterator_o, last_iterator_o)
+ *      vect2. assign(vect1.begin(), vect1.end())
+ */
+/* Sorting 2D vector
+ *  By row and column
+ *     sorting the first row:
+ *      sort(vect[0].begin(), vect[0].end());
+ *     sorting on basis of 2nd column:
+ *      bool sortcol( const vector<int>& v1,
+               const vector<int>& v2 ) {
+                    return v1[1] < v2[1];
+        }
+ *      sort(vect.begin(), vect.end(),sortcol);
+ *  In descending order by row and column
+ *      sorting first row:
+ *          sort(vect[0].rbegin(), vect[0].rend());
+ *      "sort()" for sorting on basis of 2nd column in descending order
+ *          bool sortcol( const vector<int>& v1,
+               const vector<int>& v2 ) {
+                    return v1[1] > v2[1];}
+            sort(vect.begin(), vect.end(),sortcol)
+ *
+ *  By number of columns:
+ *      2D vector is sorted on basis of a no. of column in ascending order.
+ *          bool sizecom(const vector<int>& v1, const vector<int>& v2){
+                return v1.size() < v2.size();
+            }
+            sort(vect.begin(), vect.end(), sizecom);
+    Sorting the vector elements on the basis of first element of pairs in descending order.
+        sort(vect.rbegin(), vect.rend());
+    Sorting the vector elements on the basis of second element of pairs in descending order.
+        bool sortbysecdesc(const pair<int,int> &a,
+                   const pair<int,int> &b){
+            return a.second>b.second;
+        }
+        sort(vect.begin(), vect.end(), sortbysecdesc);
+
+ *
+ */
