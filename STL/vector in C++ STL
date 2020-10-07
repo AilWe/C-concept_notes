@@ -1,0 +1,312 @@
+/* Vector in C++ STL
+ *  Inserting at the end takes differential time -> Maybe a need of extending the array
+ *  Removing the last element takes only constant time -> no resizing happens
+ *  Inserting and erasing at the beginning or in the middle is linear in time
+ *  Main functions:
+ *      Iterators:
+ *          begin(): returns an iterator pointing to the first element in the vector
+ *          end(): returns an iterator pointing to the theoretical element following the last element
+ *          rbegin(): returns a reverse iterator pointing to the last element in the vector (last -> first)
+ *          rend(): returns a reverse iterator pointing to the theoretical element preceding the first element
+ *          cbegin(): returns a constant iterator pointing to the first element
+ *          cend(): returns an constant iterator pointing to the theoretical element following the last element
+ *          crbegin(): returns a constant reverse iterator pointing to the last element in the vector
+ *          crend(): returns a constant reverse iterator pointing to the theoretical element preceding the first element in the vector
+ *      Capacity:
+ *          size(): returns the number of element
+ *          max_size(): returns the maximum number of element that the vector can hold
+ *          capacity(): returns the size of the storage space currently allocated to the vector (number of element)
+ *          resize(n): resize the container
+ *          empty(): return bool whether the container is empty
+ *          shrink_to_fit(): reduce the capacity of container to fit its size and destroys all elements beyong the capacity
+ *          reverse(): request the vector capacity be at least enough to contain n elements
+ *      Element access:
+ *          reference operator [g]: return a reference to the element at position 'g' in the vector
+ *          at(g): return a reference to the element at position 'g'
+ *          front(): returns a reference to the first element
+ *          back(): returns a reference to the last element
+ *          data(): returns a direct pointer to the memory array used by internally to store its owned element
+ *      Modifier:
+ *          assign(): it assign new value to the vector element by replacing old ones
+ *          push_back(): it push the elements from the back
+ *          pop_back(): pop or remove elements from the back
+ *          insert(): insert new element before the element
+ *          erase(): remove element form a container from the specified position or range
+ *          swap(): swap the container of two same type vector. Size may differ
+ *          clear(): remove all element of the vector container
+ *          emplace(): extend the container by inserting new element at position
+ *          emplace_back(): insert new element to the end of the vector
+ */
+/*
+#include <bits/stdc++.h>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    // Assign vector
+    vector<int> v;
+
+    // fill the array with 10 five times
+    v.assign(5, 10);
+
+    cout << "The vector elements are: ";
+    for (int i = 0; i < v.size(); i++)
+        cout << v[i] << " ";
+
+    // inserts 15 to the last position
+    v.push_back(15);
+    int n = v.size();
+    cout << "\nThe last element is: " << v[n - 1];
+
+    // removes last element
+    v.pop_back();
+
+    // prints the vector
+    cout << "\nThe vector elements are: ";
+    for (int i = 0; i < v.size(); i++)
+        cout << v[i] << " ";
+
+    // inserts 5 at the beginning
+    v.insert(v.begin(), 5);
+
+    cout << "\nThe first element is: " << v[0];
+
+    // removes the first element
+    v.erase(v.begin());
+
+    cout << "\nThe first element is: " << v[0];
+
+    // inserts at the beginning
+    v.emplace(v.begin(), 5);
+    cout << "\nThe first element is: " << v[0];
+
+    // Inserts 20 at the end
+    v.emplace_back(20);
+    n = v.size();
+    cout << "\nThe last element is: " << v[n - 1];
+
+    // erases the vector
+    v.clear();
+    cout << "\nVector size after erase(): " << v.size();
+
+    // two vector to perform swap
+    vector<int> v1, v2;
+    v1.push_back(1);
+    v1.push_back(2);
+    v2.push_back(3);
+    v2.push_back(4);
+
+    cout << "\n\nVector 1: ";
+    for (int i = 0; i < v1.size(); i++)
+        cout << v1[i] << " ";
+
+    cout << "\nVector 2: ";
+    for (int i = 0; i < v2.size(); i++)
+        cout << v2[i] << " ";
+
+    // Swaps v1 and v2
+    v1.swap(v2);
+
+    cout << "\nAfter Swap \nVector 1: ";
+    for (int i = 0; i < v1.size(); i++)
+        cout << v1[i] << " ";
+
+    cout << "\nVector 2: ";
+    for (int i = 0; i < v2.size(); i++)
+        cout << v2[i] << " ";
+}
+*/
+/* Copy a vector
+ *  Iterative method: general method
+ *      A loop is used to push_back() the old vector element into new vector
+ *      This is a deep copy method
+ *  "=" operator: deep copy
+ *      vect2 = vect1
+ *  Constructor: deep copy
+ *      vector<int> vect2(vect1)
+ *  Inbuilt function: deep copy
+ *      copy(first_iterator_o, last_iterator_o, back_inserter())
+ *      copy(vect1.begin(), vect1.end(), back_inserter(vect2))
+ *      assign(first_iterator_o, last_iterator_o)
+ *      vect2. assign(vect1.begin(), vect1.end())
+ */
+/* Sorting 2D vector
+ *  By row and column
+ *     sorting the first row:
+ *      sort(vect[0].begin(), vect[0].end());
+ *     sorting on basis of 2nd column:
+ *      bool sortcol( const vector<int>& v1,
+               const vector<int>& v2 ) {
+                    return v1[1] < v2[1];
+        }
+ *      sort(vect.begin(), vect.end(),sortcol);
+ *  In descending order by row and column
+ *      sorting first row:
+ *          sort(vect[0].rbegin(), vect[0].rend());
+ *      "sort()" for sorting on basis of 2nd column in descending order
+ *          bool sortcol( const vector<int>& v1,
+               const vector<int>& v2 ) {
+                    return v1[1] > v2[1];}
+            sort(vect.begin(), vect.end(),sortcol)
+ *
+ *  By number of columns:
+ *      2D vector is sorted on basis of a no. of column in ascending order.
+ *          bool sizecom(const vector<int>& v1, const vector<int>& v2){
+                return v1.size() < v2.size();
+            }
+            sort(vect.begin(), vect.end(), sizecom);
+    Sorting the vector elements on the basis of first element of pairs in descending order.
+        sort(vect.rbegin(), vect.rend());
+    Sorting vector of pairs
+        vector containing multiple number of pairs
+            vect.push_back( make_pair(value1, value2));
+         Sorting the vector elements on the basis of first element of pairs in ascending order.
+            sort(vect.begin(), vect.end());
+    Sorting the vector elements on the basis of second element of pairs in descending order.
+        bool sortbysecdesc(const pair<int,int> &a,
+                   const pair<int,int> &b){
+            return a.second>b.second;
+        }
+        sort(vect.begin(), vect.end(), sortbysecdesc);
+ *
+ */
+/* 2D vector in C++ with user defined size
+ *   vector<vector<int> > vect{ { 1, 2 },
+                               { 4, 5, 6 },
+                               { 7, 8, 9, 10 } };
+ * Define the 2D vector with different sizes of column input by user.
+ *
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    // size of row
+    int row = 5;
+    int colom[] = { 5, 3, 4, 2, 1 };
+
+    // Create a vector of vector with size
+    // equal to row.
+    vector<vector<int> > vec(row);
+
+    for (int i = 0; i < row; i++) {
+
+        // size of column
+        int col;
+        col = colom[i];
+
+        // declare  the i-th row to size of column
+        vec[i] = vector<int>(col);
+        for (int j = 0; j < col; j++)
+            vec[i][j] = j + 1;
+    }
+
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < vec[i].size(); j++)
+            cout << vec[i][j] << " ";
+        cout << endl;
+    }
+}
+*
+ *  Initial 2D vector with 0
+ *      vector<vector<int> > vec( row , vector<int> (col, 0));
+ * vector erase() and clear()
+ *  vector are dynamic array
+ *  Can resize itself automatically
+ *  Its storage is handled automatically by container
+ *  .clear(): make .size = 0, no parameter
+ *      Time complexity: O(N)
+ *      No exception throw guarantee
+ *  .erase(position) or .erase(startingPosition, endingPosition)
+ *      No exception throw guarantee
+ *
+ * */
+/*
+ * //Given a list of integers, remove all the even elements from the vector and print the vector.
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    vector<int> myvector{ 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+    for (auto i = myvector.begin(); i != myvector.end(); ++i) {
+        if (*i % 2 == 0) {
+            myvector.erase(i);
+            i--;
+        }
+    }
+
+    // Printing the vector
+    for (auto it = myvector.begin(); it != myvector.end(); ++it)
+        cout << ' ' << *it;
+    return 0;
+}
+ // Time complexity: O(N)
+*/
+/* Passing vector to a function in C++
+ *  When passing an array to a function, a pointer is passes
+ *  However, when pass a vector, it is a deep copy
+ *  When passing a vector, we can pass reference &
+ *      void func(vector<int> &vect)
+ *  When pass it to a function without modifying a vector, we can pass it as a const reference
+ *      void func(const vector<int> &vect)
+ */
+/* vector::push_back() and vector::pop_back() in C++ STL
+ *  vector.push_back(value): push elements into a vector from the back
+ *      .size()++
+ *  vector.pop_back(): remove elements from a vector from the back
+ *      No throw guarantee. If the container is not empty, the function never throws exceptions
+ *      .size()--
+ *  Another way to count the size:
+            while (!myvector.empty()) {
+                count++;
+                myvector.pop_back();
+            }
+ */
+
+/* vector::empty() & vector::size()
+ *  .empty():
+ *      Check if the vector container is empty
+ *      Complexity: O(1)
+ *      while (!myvector.empty()) {
+            sum = sum + myvector.back();
+            myvector.pop_back();
+        }
+ *  .size():
+ *      Return the size of the vector
+ *      Complexity: O(N)
+ *      Summarization:
+ *      while (myvector.size() > 0) {
+            sum = sum + myvector.back();
+            myvector.pop_back();
+        }
+ */
+/* vector::front() & vector::back() in STL
+ *  vector.front(): fetch the first element of a vector container
+ *  vector.back(): fetch the last element of a vector container
+ *  begin() and end() return a iterator (*pointer)
+ *  front() and back() return a reference
+ */
+/* Initialize a vector
+ *  1. Pushing values one by one:
+ *      vector<int> vect;
+ *      vect.push_back(value);
+ *  2. Specifying size and initializing values
+ *      int size = 3;
+ *      vector<int> vect(size, 10);
+ *  3. Initializing like arrays
+ *      vector<int> vect{10, 20, 30};
+ *  4. Initializing from an array
+ *      int arr[] = {10, 20, 30};
+ *      vector<int> vect(arr, arr+sizeof(arr));
+ *  5. Initializing from another vector
+ *      vector<int> vect1{10, 20, 30};
+ *      vector<int> vect2(vect1.begin(), vect1.end())
+ *  6. Initializing all elements with a particular value
+ *      vector<int> vect1(10);
+ *      int value = 5;
+ *      fill(vect1.begin(), vect1.end(), value);
+ */
