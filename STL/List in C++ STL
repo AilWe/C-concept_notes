@@ -1,0 +1,44 @@
+/* List in C++ STL
+ * List has slow traversal compared to vector
+ * Insertion and deletion are quick
+ * List -> doubly linked list
+ * Forward list -> singly linked list
+ * Useful function
+ *  emplace(position value): insert an element at the position
+ *  emplace_back(value): add value at end of list
+ *      Directly creates elements at the position
+ *      Faster in implementation than push_back()
+ *  emplace_front(value): add value at beginning of list
+ *      Directly creates element at position
+ *      Faster in implementation than push_front()
+ *  .merge(list2): merge list2 with list1
+ *  remove_if(condition): removes the element from the list on the basis of condition
+ *       gqlist1.remove_if([](int x){return x%2!=0;});
+ *  unique(): delete the repeated occurrences
+ *  splice(position, list2): transfer element from one list to another
+ *  .swap(list2): swap one list element with other one
+ *  print list element:
+ *      for (int &x : gqlist1)
+ *          cout << x << " ";
+ */
+/* Forward list -> singly linked list
+ *  Allows time constant insertion and removal of elements
+ *  Forward list keeps track of location of only next element, while list keeps track to both next and previous elements
+ *  list increases the storage space
+ *  Drawback of forward list is it cannot be iterated backwards and its individual elements cannot be access directly
+ *  Example cases: chaining in hashing, adjacency list representation of graph
+ *  Operations on Forward List:
+ *      .assign(): assign values to forward list
+ *          flist1.assign({1, 2, 3});
+ *          flist2.assign(5, 10);// 10 10 10 10 10
+ *      .push_front(): insert the element at the first position on forward list
+ *      .emplace_front():
+ *      .pop_front: delete the first element of list
+ *      .insert_after(): insert elements at any position in forward list
+ *      .emplace_after():insert elements at any position without copy operation
+ *      .erase_after(): erase elements from a particular position
+ *      .remove(): removes the particular element
+ *      .remove_if(): remove under condition
+ *          flist.remove_if([](int x){ return x>20;});
+ *      .splice_after(): transfer elements from one forward list to other
+ */      
