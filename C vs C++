@@ -1,0 +1,153 @@
+#include <iostream>
+/* C vs C++
+ * In c++, compiler error to call a function before declare, but in C, it works.
+ * In C++, compiler error to make a normal pointer to point a const variable, it is allowed in C.
+ * In C, a void pointer can be assigned to other pointer like int *, char *. In C++, it ia not allowed, typcasted needed.
+ *  eg. int *p = (int *)malloc(sizeof(int))
+ * In C++, const variable must be initialized, in C it isn't necessary.
+ * C can use keyword as variable name
+ * C++ does more strict type checking than C
+ *  eg. char *c = 333 // invalid conversion from 'int' to 'char *'
+ * No void return allowed for main()
+ *
+ * Undefined behavior in C and C++:
+ *
+
+#include <iostream>
+
+// Program 1 (Divide by 0)
+int main()
+{
+    int x = 25, y = 0;
+    int z = x / y;
+    printf("Hello World!");
+    return 0;
+}
+*
+
+// Program 2 (Uninitialized variables)
+int main()
+{
+    bool val;
+    if (val)
+        printf("TRUE");
+    else
+        printf("FALSE");
+}
+*
+// Program 3 (Accessing value of NULL
+// pointer)
+int main()
+{
+    int *ptr = NULL;
+    printf("%d", *ptr);
+    return 0;
+}
+*
+// Program 4 (Accessing out of bound)
+int main()
+{
+    int arr[5];
+
+    // We access arr[5] in last iteration.
+    for (int i=0; i<=5; i++)
+        printf("%d ", arr[i]);
+}
+ *
+// Program 5 (Going beyond limit of
+// signed int)
+int main()
+{
+    int x = INT_MAX;
+    printf("%d", x+1);
+    return 0;
+}
+
+// Program 6 (Trying to modify a string
+// literal)
+int main()
+{
+    char *s = "geeksforgeeks";
+    s[0] = 'e';
+    return 0;
+}
+// Program 7 (Modifying a variable
+// multiple times before a defined
+// sequence point)
+// https://www.geeksforgeeks.org/sequence-points-in-c-set-1/
+#include <stdio.h>
+int main()
+{
+    int i = 8;
+    int p = i++*i++;
+    printf("%d\n", p);
+} //72
+ * Risk of undefined behavior: cause problem when compiler changed
+ * Advantages of undefined behavior:
+ *  Allows compilers to avoid lots of checks
+ *  Speed up the program
+ */
+/* Name mangling and extern "C" in C++
+ *  Compiler distinguishes between different functions by changing name via adding information about argument
+ *  How to handle C symbols when linking from C++
+ *      C names may not be mangled
+ *      extern C in C++ to ensure the function names are unmangled
+ *      extern "C"
+        {
+            int printf(const char *format,...);
+        }
+ * all C style header files (stdio.h, string.h) have their declaration in extern "C" block
+ */
+
+/* "void *" differ in C and C++
+ *  C allows a void* pointer to be assigned to any pointer type without a cast; c++ does not
+ *  In order to amke code compile in both C and C++, one must use an explicit cast
+ *  void* ptr;
+ *  int *i = (int *) ptr;
+ *  int *j = (int *) malloc(sizeof(int) * 5);
+ */
+
+/* Program produces different results in C and C++
+ * In C, character can be treated as integers, while characters in C++
+ *
+#include<stdio.h>
+int main()
+{
+  printf("%d", sizeof('a'));
+  return 0;
+}
+ //in C, 4; in C++, 1
+ *
+ * In C, use struct tag when declare a struct variable; in C++,  the tag is not necessary
+
+
+#include <stdio.h>
+int T;
+
+int main()
+{
+    struct T { double x; };  // In C++, this T hides the global variable T,
+    // but not in C
+    printf("%d", sizeof(T));
+    return 0;
+}
+// in C, 4, in C++, 8
+ *
+ * Types of boolean results are different
+ * In C is 4, in C++ is 1
+ */
+/* Type difference of character literals in C and C++
+ *  sizeof(char) is different in C and C++
+ *  In C is 4 (int), in C++ is a 1 (char)
+ *  Reason: C++ support function overloading
+ */
+/* Difference between C struct and C++ struct
+ *  1. Member function inside struct: in C, it cannot have member function inside structure, it allows in C++
+ *  2. Direct initialization: in C, it cannot directly initialize struct data member, in C++ allows.
+ *  3. Using struct keyword: in C, "struct record"; in C++, "Record"
+ *  4. Static member: C struct do not have static member but is allowed in C++
+ *  5. Constructor creation in struct: C don't have constructor inside struct but struct in C++ can have constructor creation
+ *  6. sizeof: in C, generate 0 for empty structure, in C++, 1 for empty struct
+ *  7. data hiding: not in C; allows in C++
+ *  8. Access modifiers: C struct don't have access modifier, but C++ have
+ */
