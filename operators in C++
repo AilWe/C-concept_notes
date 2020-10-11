@@ -1,0 +1,325 @@
+#include <iostream>
+/* operators in C++
+ * Unary operator:
+ *  Operators that act upon a single operand to produce a new value
+ *  Types of unary operators
+ *      -: changes the sign of its argument
+ *      ++: increment the value of the variable by 1
+ *          ++a:the value of operand will be altered before it used
+ *          a++: the value operand will be altered after it is used
+ *      --: decrement the value of the variable by 1
+ *          --a: the value of operand will be altered before it is used
+ *          a--: the value of operand will be altered after it is used
+ *      --a  & ++a can be used as l-value; a--, a++ can not be used as l-value
+ *          ++a is a reference to the variable to which we can further assign
+ *          int &ref = ++a; //valid
+ *          int &ref = a++; //invalid, it get incremented in the next statement
+ *      !: reverse the logical state of its operand
+ *      &: gives an address of a variable (pointer)
+ *      sizeof: returns the size of its operand, in bytes
+ */
+/* Conditionally assign a value without using conditional and arithmetic operators
+ * Given 4 integers a, b, y, and x, where x can only either 0 and 1 only. The ask is as follows:
+
+If 'x' is 0,
+   Assign value 'a' to variable 'y'
+Else (If 'x' is 1)
+   Assign value 'b' to variable 'y'.
+Note: – You are not allowed to use any conditional operator (including ternary operator) or any arithmetic operator ( +, -, *, /).
+ *
+
+// C/C++ program  to assign value to y according
+// to value of x
+
+#include<iostream>
+using namespace std;
+
+// Function to assign value to y according
+// to value of x
+int assignValue(int a, int b, int x)
+{
+    int y;
+    int arr[2];
+
+    // Store both values in an array
+    // value 'a' at 0th index
+    arr[0] = a;
+
+    // Value 'b' at 1th index
+    arr[1] = b;
+
+    // Assign value to 'y' taking 'x' as index
+    y = arr[x];
+
+    return y;
+}
+
+// Driver code
+int main()
+{
+    int a = 5;
+    int b = 10;
+    int x = 0;
+
+    cout << "Value assigned to 'y' is "
+         << assignValue(a, b, x);
+    return 0;
+}
+#include <iostream>
+using namespace std;
+
+int calculate(int a, int b, int c)
+{
+    return ((1 - c) * a) + (c * b);
+}
+
+int main()
+{
+   int a = 5, b = 10, c = 0;
+
+   int x = calculate(a, b, c);
+   cout << x << endl;
+
+   return 0;
+}
+
+ */
+/* Execution of printf with ++
+ * printf("%d %d %d", i, ++i, i++)
+ * It is not defined in which order the arguments are evaluated
+ * Different compiler may choose different orders
+ * Therefore, it is not recommended to do two or more than two ++a or a++ in same statement
+ */
+
+/* Scope resolution operator vs this pointer in C++
+ * // C++ program to show that local parameters hide
+// class members
+#include<iostream>
+using namespace std;
+class Test
+{
+    int a;
+public:
+    Test() { a = 1; }
+
+    // Local parameter 'a' hides class member 'a'
+    void func(int a)  { cout << a; }
+};
+
+int main()
+{
+    Test obj;
+    int k = 3 ;
+    obj.func(k);
+    return 0;
+} //Output: 3
+ // "a" passed as argument to func shadows the "a" of the class
+ void func(int a)  { cout << this->a; }
+ //Output: 1
+ //this pointer points to the obj from whom function is called
+ Scope resolution operator:
+    Can only be used for a static data member (or class memebers)
+    class Test
+{
+    static int a;  // a IS STATIC NOW
+public:
+
+    // Local parameter 'a' hides class member
+    // 'a', but we can access it using ::
+    void func(int a)  { cout << Test::a; }
+};
+
+// In C++, static members must be explicitly defined
+// like this
+int Test::a = 1;
+ //Output: 1
+ */
+/* new and delete -> allocating and freeing the memory in easier way
+ *  new operator
+ *      denote a request for memory allocation on the Free Store. initialize the memory to the pointer variable
+ *      and returns the address of the newly allocated
+ *      if enough memory is not availbale in the heap to allocate, the new request indicates failure by throwing
+ *      an exception of type std::bad_alloc
+ *      in this case, if int *p = new(nothrow) int;, it will return a NULL pointer
+ *  delete operator
+ *      free the dynamically allocated memory
+ */
+/* CHAR_BIT:
+ *  The number of bits in char. Almost all architectures use 8 bits per byte
+// CPP program to print byte by byte presentation
+#include <bits/stdc++.h>
+using namespace std;
+
+// function in which number and intitally 0 is passed
+void printInBinary(int num)
+{
+    int n = CHAR_BIT*sizeof(num);
+    stack<bool> s;
+    for (int i=1; i<=n; i++)
+    {
+        s.push(num%2);
+        num = num/2;
+    }
+    for (int i=1; i<=n; i++)
+    {
+        cout << s.top();
+        s.pop();
+
+        // Put a space after every byte.
+        if (i % CHAR_BIT == 0)
+            cout << " ";
+    }
+}
+
+int main()
+{
+    int num = 12;
+    printInBinary(num);
+    return 0;
+}
+ */
+/* const_cast in C++
+ *  const_cast:
+ *      cast away the constness of variable.
+ *      Can be used to change non-const class member inside a const member function
+ *  static_cast:
+ *  dynamic_cast:
+ *  reinterpret_cast:
+ *  Can be used to change non-const class member inside a const member function
+ *
+#include <iostream>
+using namespace std;
+
+class student
+{
+private:
+    int roll;
+public:
+    // constructor
+    student(int r):roll(r) {}
+
+    // A const function that changes roll with the help of const_cast
+    void fun() const
+    {
+        ( const_cast <student*> (this) )->roll = 5;
+    }
+
+    int getRoll()  { return roll; }
+};
+
+int main(void)
+{
+    student s(3);
+    cout << "Old roll number: " << s.getRoll() << endl;
+
+    s.fun();
+
+    cout << "New roll number: " << s.getRoll() << endl;
+
+    return 0;
+}
+ *
+ * cons_cast can pass const data to a function that doesn't receive const
+ * * const_cast is a undefinded behavior to modify a value which is initially declared as const
+ * #include <iostream>
+using namespace std;
+
+int fun(int* ptr)
+{
+    return (*ptr + 10);
+}
+
+int main(void)
+{
+    const int val = 10;
+    const int *ptr = &val;
+    int *ptr1 = const_cast <int *>(ptr);
+    cout << fun(ptr1);
+    //cout << val; //Undefined behavior
+    return 0;
+}
+
+ * const_cast is safer than simpler type casting
+ *
+#include <iostream>
+using namespace std;
+
+int main(void)
+{
+    int a1 = 40;
+    const int* b1 = &a1;
+    char* c1 = const_cast <char *> (b1); // compiler error
+    *c1 = 'A';
+    return 0;
+}
+ // error, casting won't happen if the type of cast is not same as original obj.
+ *
+ * const_cast can be used to cast away volatile attribute
+ * #include <iostream>
+#include <typeinfo>
+using namespace std;
+
+int main(void)
+{
+    int a1 = 40;
+    const volatile int* b1 = &a1;
+    cout << "typeid of b1 " << typeid(b1).name() << '\n';
+    int* c1 = const_cast <int *> (b1);
+    cout << "typeid of c1 " << typeid(c1).name() << '\n';
+    return 0;
+}
+ //typeid of b1 PVKi
+ //typeid of c1 Pi
+ Question: volatile keyword in C++?
+    Applied to a varible during declaration
+    It means the value may be change at any time
+    It cannot remove the memory assignement
+    It cannot cache the variable in register
+    The value cannot change in order of assignment
+
+ *
+
+#include <iostream>
+using namespace std;
+
+int main(void)
+{
+    int a1 = 40;
+    const int* b1 = &a1;
+    char* c1 = (char *)(b1);
+    *c1 = 'A';
+    return 0;
+}
+ */
+#include <iostream>
+using namespace std;
+
+class student
+{
+private:
+    //const int roll;
+    int roll;
+public:
+    // constructor
+    student(int r):roll(r) {}
+
+    // A const function that changes roll with the help of const_cast
+    void fun() const
+    {
+        ( const_cast <student*> (this) )->roll = 5;
+    }
+
+    int getRoll()  { return roll; }
+};
+
+int main(void)
+{
+    student s(3);
+    cout << "Old roll number: " << s.getRoll() << endl;
+
+    s.fun();
+
+    cout << "New roll number: " << s.getRoll() << endl;
+
+    return 0;
+}
