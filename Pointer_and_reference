@@ -1,0 +1,305 @@
+#include <iostream>
+/* Pointer
+ * & (ampersand) return the address of variable -> reference
+ * * (asterisk) declare a pointer variable -> dereference
+ * Pointer arithmetic operation: ++, --, + or +=, - or -=
+ * Pointers and multidimensional arrays
+ *  2D array nums: nums[i][j] -> *(*(nums+i)+j)
+ *  *(*nums): nums[0][0]
+ *  *(*nums + 1): nums[0][1]
+ *  *(*nums + 2): nums[0][2]
+ *  *(*(nums + 1)): nums[1][0]
+ *  *(*(nums + 1) + 1): nums[1][1]
+ *  *(*(nums + 1) + 2): nums[1][2]
+ *
+ *
+ *
+ */
+/* What is array decay in C++?
+ *  The loss of type and dimensions of an array
+ *  Occurs when we pass the array into function by value or pointer
+ *
+ */
+/*
+
+// C++ code to demonstrate array decay
+#include<iostream>
+using namespace std;
+
+// Driver function to show Array decay
+// Passing array by value
+void aDecay(int *p)
+{
+    // Printing size of pointer
+    cout << "Modified size of array is by "
+            " passing by value: ";
+    cout << sizeof(p) << endl;
+}
+
+// Function to show that array decay happens
+// even if we use pointer
+void pDecay(int (*p)[7])
+{
+    // Printing size of array
+    cout << "Modified size of array by "
+            "passing by pointer: ";
+    cout << sizeof(p) << endl;
+}
+
+int main()
+{
+    int a[7] = {1, 2, 3, 4, 5, 6, 7,};
+
+    // Printing original size of array
+    cout << "Actual size of array is: ";
+    cout << sizeof(a) <<endl;
+
+    // Calling function by value
+    aDecay(a);
+
+    // Calling function by pointer
+    pDecay(&a);
+
+    return 0;
+}
+ //By calling by value and pointer, array decays into pointer and prints the size of 1 pointer
+ * How to prevent array decay
+ *  Pass size of array also as a parameter and not use sizeof on array parameter
+ *  Send the array into functions by reference. This prevents conversion of array into a pointer, hence prevents the decay.
+ * // C++ code to demonstrate prevention of
+// decay of array
+#include<iostream>
+using namespace std;
+
+// A function that prevents Array decay
+// by passing array by reference
+void fun(int (&p)[7])
+{
+    // Printing size of array
+    cout << "Modified size of array by "
+            "passing by reference: ";
+    cout << sizeof(p) << endl;
+}
+
+int main()
+{
+    int a[7] = {1, 2, 3, 4, 5, 6, 7,};
+
+    // Printing original size of array
+    cout << "Actual size of array is: ";
+    cout << sizeof(a) <<endl;
+
+    // Calling function by reference
+    fun(a);
+
+    return 0;
+}
+ //Size in both cases is 28.
+ */
+/* Opaque pointer
+ *  A pointer which points to a data structure whose contents are not exposed at the time of its definition
+ *      eg. struct Stest *pStest;
+ *  It is safe to assign NULL to an opaue pointer
+ *  pSTest = NULL;
+ *  Why?
+ *   Dealing with shared code
+ *
+ *
+ */
+/* References
+ *  alternative name for an existing variable
+ *  application:
+ *      Modify the passed parameter in a function
+ *      Avoiding copy of large structure
+ *      In for each loop to modify all objects
+ *      Question:
+ *          auto: the type of variable declared automatically deduced from initializer or return value/
+ * References vs pointers
+ *  A pointer can be declared as void but a reference can never be void
+ *  Reference are less powerful than pointers
+ *      Once a reference is created, it cannot be reseated
+ *      References cannot be NULL
+ *      A reference must be initialized when declared
+ *  References are safer and easier to use:
+ *      Reference must be initialized, wild reference are unlikely to exist
+ *      Reference don't need dereferencing operator to access the value
+ *      object reference access with "."; pointers access with "->"
+ */
+/* Reference refer to invalid location in C++?
+ *  1) Reference to value at uninitialized pointer
+ *      int *ptr;
+        int &ref = *ptr;
+ *  2) Reference to a local variable is returned
+ *      int &fun()
+ *      {
+ *      int a = 10;
+ *      return a;
+ *      }
+ *      Once fun() return, the space allocated to it on stack frame will be taken back.
+ *      So the reference to a local variable will not be valid.
+ */
+/* When to pass arguments by &
+ *   By passing reference:
+ *      1) To modify local variables of the caller function:
+ *      A reference allows called function to modify a local variable of the caller function.
+        void fun(int &x) {
+            x = 20;
+        }
+
+        int main() {
+            int x = 10;
+            fun(x);
+            cout<<"New value of x is "<<x;
+            return 0;
+        }
+ *
+ *      2) For passing large sized argument (only valid for struct and class variables)
+ *          If an argument is large, passing by reference is more efficient bc only address is passed, not the entire obj
+ *          void printEmpDetails(const Employee &emp) {
+                cout<<emp.getName();
+                cout<<emp.getDesig();
+
+                // Print more attributes
+            }
+ *      3) To avoid obj slicing (only valid for struct and class):
+ *          If pass by value, pass an object of subclass to a function, the object of superclass will passed a slice the obj
+ *          #include <iostream>
+            #include<string>
+
+            using namespace std;
+
+            class Pet {
+            public:
+                virtual string getDescription() const {
+                    return "This is Pet class";
+                }
+            };
+
+            class Dog : public Pet {
+            public:
+                virtual string getDescription() const {
+                    return "This is Dog class";
+                }
+            };
+
+            void describe(Pet p) { // Slices the derived class object
+                cout<<p.getDescription()<<endl;
+            }
+
+            int main() {
+                Dog d;
+                describe(d);
+                return 0;
+            }
+            //Output: This is Pet Class
+            void describe(const Pet &p) { // Doesn't slice the derived class object.
+            cout<<p.getDescription()<<endl;
+            }
+ *          //Output: This is Dog Class
+ *          4) To acheive Run time polymorphism in a function
+ */
+/* Smart Pointers
+ *  Pointers are used for accessing the resources which are external to the program like heap
+ *  Problem with normal pointer
+ *
+#include <iostream>
+using namespace std;
+
+class Rectangle {
+private:
+    int length;
+    int breadth;
+};
+
+void fun()
+{
+    // By taking a pointer p and
+    // dynamically creating object
+    // of class rectangle
+    Rectangle* p = new Rectangle();
+}
+
+int main()
+{
+    // Infinite Loop
+    while (1) {
+        fun();
+    }
+}
+ * Once the function ends this 'p' is deleted, bc this 'p' is a local variable to the function. however, the new rectangular
+ * is new, allocated inside heap, the information in heap will not be deallocated -> memory leak from heap memory
+ * Smart pointers: automatically manage memory and they will deallocate the object when theare not in use, when the pointer is going
+ * out of scope automatically, it will deallocate the memory
+ *  A smart pointer is a wrapper class over a pointer with an operator like * and -> overloaded.
+ *  #include <iostream>
+using namespace std;
+
+class SmartPtr {
+    int* ptr; // Actual pointer
+public:
+    // Constructor: Refer https:// www.geeksforgeeks.org/g-fact-93/
+    // for use of explicit keyword
+    explicit SmartPtr(int* p = NULL) { ptr = p; }
+
+    // Destructor
+    ~SmartPtr() { delete (ptr); }
+
+    // Overloading dereferencing operator
+    int& operator*() { return *ptr; }
+};
+
+int main()
+{
+    SmartPtr ptr(new int());
+    *ptr = 20;
+    cout << *ptr;
+
+    // We don't need to call delete ptr: when the object
+    // ptr goes out of scope, the destructor for it is automatically
+    // called and destructor does delete ptr.
+
+    return 0;
+}
+ * #include <iostream>
+using namespace std;
+
+// A generic smart pointer class
+template <class T>
+class SmartPtr {
+    T* ptr; // Actual pointer
+public:
+    // Constructor
+    explicit SmartPtr(T* p = NULL) { ptr = p; }
+
+    // Destructor
+    ~SmartPtr() { delete (ptr); }
+
+    // Overloading dereferncing operator
+    T& operator*() { return *ptr; }
+
+    // Overloading arrow operator so that
+    // members of T can be accessed
+    // like a pointer (useful if T represents
+    // a class or struct or union type)
+    T* operator->() { return ptr; }
+};
+
+int main()
+{
+    SmartPtr<int> ptr(new int());
+    *ptr = 20;
+    cout << *ptr;
+    return 0;
+}
+ *  Types of smart pointer
+ *      unique_ptr: pointing to one only
+ *      shared_ptr: more than one pointer can point to this obj at a time
+ *      weak_ptr: it is not maintain a reference counter. THis reason is if suppose pointer are holding the obejct and requesting for other obj
+ *              they may form a Deadlock.
+ */
+/* 'this' pointer in C++
+ *  Each object gets its own copy of the data member
+ *  All-access the same function definition as present in the code segment
+ *  
+ *
+ */
