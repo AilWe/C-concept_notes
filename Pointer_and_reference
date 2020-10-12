@@ -292,14 +292,170 @@ int main()
     return 0;
 }
  *  Types of smart pointer
+ *      auto_ptr: manages an object obtained via new expression and deletes that object when auto_ptr itself is destroyed.
+ *          auto_ptr do not acutally copy the stored pointer instead they transfer it, leaving the first auto_ptr obj empty
+ *          so that only one auto_ptr obj can own the pointer at any given time
+ *          It can't be used within STL containers
  *      unique_ptr: pointing to one only
  *      shared_ptr: more than one pointer can point to this obj at a time
  *      weak_ptr: it is not maintain a reference counter. THis reason is if suppose pointer are holding the obejct and requesting for other obj
  *              they may form a Deadlock.
  */
 /* 'this' pointer in C++
- *  Each object gets its own copy of the data member
- *  All-access the same function definition as present in the code segment
- *  
+ *      Each object gets its own copy of the data member
+ *      All-access the same function definition as present in the code segment
+ *      How member function is used by multiple objects. That is why we use 'this' pointer.
+ *      'this' pointer is passed as a hidden argument to all nonstatic member function calls and is available as a local
+ *      variable within the body of all nonstatic functions.
+ *      'this' pointer is not available in static member functions,
+ *      as static member functions can be called without any object (with class name).
+ *      For a class X, the type of this pointer is 'X*'. It also support 'const X *'.
+ *      C++ lets object destroy themselves by calling  delete this;
+ *      1) When local variable's name is same as member's name
+         using namespace std;
+        class Test
+        {
+        private:
+            int x;
+        public:
+            void setX (int x)
+            {
+                // The 'this' pointer is used to retrieve the object's x
+                // hidden by the local variable 'x'
+                this->x = x;
+            }
+            void print() { cout << "x = " << x << endl; }
+        };
+*
+ *      2) To return reference to the calling object
+ *          Test& Test::func ()
+            {
+               // Some processing
+               return *this;
+            }
+ */
+/*
+ * #include<iostream>
+using namespace std;
+
+class Test
+{
+private:
+    int x;
+    int y;
+public:
+    Test(int x = 0, int y = 0) { this->x = x; this->y = y; }
+    void fun1() { cout << "Inside fun1()"; }
+    void fun2() { cout << "Inside fun2()"; this->fun1(); }
+};
+
+int main()
+{
+    Test obj;
+    obj.fun2();
+    return 0;
+}
+
+#include<iostream>
+using namespace std;
+
+class Test
+{
+private:
+    int x;
+    int y;
+public:
+    Test (int x = 0, int y = 0) { this->x = x; this->y = y; }
+    Test &setX(int a) { x = a; return *this; }
+    Test &setY(int b) { y = b; return *this; }
+    void print() { cout << "x = " << x << " y = " << y << endl; }
+};
+
+int main() {
+    Test obj1;
+    obj1.setX(10).setY(20);
+    obj1.print();
+    return 0;
+}
+
+#include<iostream>
+using namespace std;
+
+class Test
+{
+private:
+    int x;
+    int y;
+public:
+    Test(int x = 0, int y = 0) { this->x = x; this->y = y; }
+    Test &setX(int a) { x = a; return *this; }
+    Test &setY(int b) { y = b; return *this;}
+    void destroy()  { delete this; }
+    void print() { cout << "x = " << x << " y = " << y << endl; }
+};
+
+int main()
+{
+    Test obj;
+    obj.setX(10).setY(20);
+    obj.destroy();
+    obj.print();
+    return 0;
+}
+
+
+#include<iostream>
+using namespace std;
+
+class Test
+{
+private:
+    int x;
+public:
+    Test(int x = 0) { this->x = x; }
+    int change(int *t){this -> x = *t; return 0;}
+    void print() { cout << "x = " << x << endl; }
+};
+
+int main()
+{
+    Test obj(5);
+    int *ptr = new int (10);
+    obj.change(ptr);
+    obj.print();
+    return 0;
+}
+ */
+/* Type of 'this' pointer
+ *  this pointer is passed as a hidden argument to all non-static member function calls
+ *  If the member function of a class X is declared as const, the type of this is const X*
+ *  If the member function is declared as volatile, the type of this is volatile *X
+ *  class X {
+   void fun() const {
+
+    // this is passed as hidden argument to fun().
+    // Type of this is const X* const
+    }
+};
+ #include<iostream>
+class X {
+   void fun() volatile {
+
+     // this is passed as hidden argument to fun().
+     // Type of this is volatile X* const
+    }
+};
+ #include<iostream>
+class X {
+   void fun() const volatile {
+
+     // this is passed as hidden argument to fun().
+     // Type of this is const volatile X* const
+    }
+};
+
+ *  delete this
+ *      1) delete operator works only for objects allocated with 'new', otherwise it is an undefined.
+ *      2) Once delete this is done, any member should not access the deleted object after deletion.
  *
  */
