@@ -296,10 +296,72 @@ int main()
  *          auto_ptr do not acutally copy the stored pointer instead they transfer it, leaving the first auto_ptr obj empty
  *          so that only one auto_ptr obj can own the pointer at any given time
  *          It can't be used within STL containers
- *      unique_ptr: pointing to one only
+ *      unique_ptr: developed in c++11 as a replacement for std::auto_ptr. Improved security. It is a container for raw pointer.
+ *          pointing to one only.
+ *          Any attempt to make a copy of unique_ptr will cause a compile-time error
+ *          unique_ptr can be moved using the new move semantics, using std::move() funcion to transfer ownership of the contained pointer to another unique_ptr
+ *          It is best to use unique_ptr when we want a single pointer to an object
+ *          Use unique_ptr when you want to have single ownership (exclusive) of the resource
+ *          unique_ptr<A> fun()
+            {
+                unique_ptr<A> ptr(new A);
+
+                 ...
+                   ...
+
+            return ptr;
+            }
  *      shared_ptr: more than one pointer can point to this obj at a time
- *      weak_ptr: it is not maintain a reference counter. THis reason is if suppose pointer are holding the obejct and requesting for other obj
+ *          Reference counting ownership model.
+ *          The counter is incremented each time when a new pointer points to the resource
+ *          and decremented when the destructor of the obj is called
+ *          Reference counting:
+ *              A technique of storing the number of reference, pointers or handles to a resources
+ *              We should use shared_ptr when we want to assign one raw pointer to multiple owners
+ *              // C++ program to demonstrate shared_ptr
+                #include <iostream>
+                #include <memory>
+                using namespace std;
+
+                class A {
+                public:
+                    void show()
+                    {
+                        cout << "A::show()" << endl;
+                    }
+                };
+
+                int main()
+                {
+                    shared_ptr<A> p1(new A);
+                    cout << p1.get() << endl;
+                    p1->show();
+                    shared_ptr<A> p2(p1);
+                    p2->show();
+                    cout << p1.get() << endl;
+                    cout << p2.get() << endl;
+
+                    // Returns the number of shared_ptr objects
+                    // referring to the same managed object.
+                    cout << p1.use_count() << endl;
+                    cout << p2.use_count() << endl;
+
+                    // Relinquishes ownership of p1 on the object
+                    // and pointer becomes NULL
+                    p1.reset();
+                    cout << p1.get() << endl;
+                    cout << p2.use_count() << endl;
+                    cout << p2.get() << endl;
+
+                    return 0;
+                }
+ *      weak_ptr:A copy to shared_ptr
+ *              it is not maintain a reference counter. THis reason is if suppose pointer are holding the obejct and requesting for other obj
  *              they may form a Deadlock.
+ *              The existence or destruction of weak_ptr has no effect on the shared_ptr or its other copies
+ *              It is required in some cases to break circular reference between shared_ptr instances.
+ *              Cyclic dependency: two classes A and B, both have pointers to other classes, use_count will never reach zero and they never deleted (Dead lock)
+ *              When you do want to refer to your obj from multiple places, for those references for which it is ok to ignore and deallocate.
  */
 /* 'this' pointer in C++
  *      Each object gets its own copy of the data member
@@ -458,4 +520,213 @@ class X {
  *      1) delete operator works only for objects allocated with 'new', otherwise it is an undefined.
  *      2) Once delete this is done, any member should not access the deleted object after deletion.
  *
+ */
+/* dangling, void, NULL and wild pointers
+ *  Dangling pointer:
+ *      A pointer pointing to a memory location that has been deleted (or freed)
+ *      Three ways:
+ *          De-allocation of memory
+ *          // Deallocating a memory pointed by ptr causes
+            // dangling pointer
+            #include <stdlib.h>
+            #include <stdio.h>
+            int main()
+            {
+                int *ptr = (int *)malloc(sizeof(int));
+
+                // After below free call, ptr becomes a
+                // dangling pointer
+                free(ptr);
+
+                // No more a dangling pointer
+                ptr = NULL;
+            }
+ *          Function call when local variable is not static
+     *      // The pointer pointing to local variable becomes
+            // dangling when local variable is not static.
+            #include<stdio.h>
+
+            int *fun()
+            {
+                // x is local variable and goes out of
+                // scope after an execution of fun() is
+                // over.
+                int x = 5;
+
+                return &x;
+            }
+
+            // Driver Code
+            int main()
+            {
+                int *p = fun();
+                fflush(stdin);
+
+                // p points to something which is not
+                // valid anymore
+                printf("%d", *p);
+                return 0;
+            }
+            //A garbage Address
+ *
+ *
+ *          Variable goes out of scope:
+ *          void main()
+            {
+               int *ptr;
+               .....
+               .....
+               {
+                   int ch;
+                   ptr = &ch;
+               }
+               .....
+               // Here ptr is dangling pointer
+            }
+ * Void pointer
+ *  A pointer that points to some data location in storage, which does not have any specific type.
+ *  Any pointer type is convertible to a void pointer hence it can point to any value.
+ *      Void pointer cannot be dereferenced.
+ *      Pointer arithmetic is not possible on pointers of void due to lack of concrete value and size
+ *      #include<stdlib.h>
+          int main()
+        {
+            int x = 4;
+            float y = 5.5;
+
+            //A void pointer
+            void *ptr;
+            ptr = &x;
+
+            // (int*)ptr - does type casting of void
+            // *((int*)ptr) dereferences the typecasted
+            // void pointer variable.
+            printf("Integer variable is = %d", *( (int*) ptr) );
+
+            // void pointer is now float
+            ptr = &y;
+            printf("\nFloat variable is= %f", *( (float*) ptr) );
+
+            return 0;
+        }
+ *
+ * NULL pointer
+ *  A pointer points to nothing.
+ *      NULL vs uninitialized pointer - an initialized pointer stores an undefined value.
+ *      A null pointer stores a defined value.
+ *      NULL vs void pointer - NULL pointer is a value, while void pointer is a type
+ * Wild pointer
+ *  A pointer has not been initialized to anything (not even NULL)
+ */
+/* Passing by pointer vs passing by reference
+ *  A pointer can be declared as void but a reference can never be void
+ *  Reference are less powerful than pointers
+ *      Once a reference is created, it cannot be reseated
+ *      References cannot be NULL
+ *      A reference must be initialized when declared
+ *  References are safer and easier to use:
+ *      Reference must be initialized, wild reference are unlikely to exist
+ *      Reference don't need dereferencing operator to access the value
+ *      object reference access with "."; pointers access with "->"
+ *      // C++ program to demonstrate differences between pointer
+        // and reference.
+        #include <iostream>
+        using namespace std;
+
+        struct demo
+        {
+            int a;
+        };
+
+        int main()
+        {
+            int x = 5;
+            int y = 6;
+            demo d;
+
+            int *p;
+            p =  &x;
+            p = &y;                     // 1. Pointer reintialization allowed
+            int &r = x;
+            // &r = y;                  // 1. Compile Error
+            r = y;                      // 1. x value becomes 6
+
+            p = NULL;
+            // &r = NULL;               // 2. Compile Error
+
+            p++;                        // 3. Points to next memory location
+            r++;                        // 3. x values becomes 7
+
+            cout << &p << " " << &x << endl;    // 4. Different address
+            cout << &r << " " << &x << endl;    // 4. Same address
+
+            demo *q = &d;
+            demo &qq = d;
+
+            q->a = 8;
+            // q.a = 8;                 // 5. Compile Error
+            qq.a = 8;
+            // qq->a = 8;               // 5. Compile Error
+
+            cout << p << endl;        // 6. Prints the address
+            cout << r << endl;        // 6. Print the value of x
+
+            return 0;
+        }
+        Pointer: a variable that holds memory address of another variable, need * to dereference
+        Reference: an alias, another name for an already existing variable, can be thought as a constant pointer0
+        Initialization: & need be initialization
+        Reassignment: A pointer can be reassigned, a reference cannot.
+        Memory address: A pointer has its own memory address and size on the stack whereas a reference shares the same
+                        memory address (with the original variable) but also takes up some space on the stack.
+        NULL value: Pointer can be assigned NULL directly, whereas reference cannot.
+        Indirection:* to pointers offering extra levels of indirection.
+                    & only offer one level of indirection
+        Arithmetic operations: various arithmetic operations can be performed on pointer but no reference arithmetic
+ */
+/* NaN in C++
+ *  An expression results in a number that cannot be represented, ex sqrt of negative number
+ *      Check for NaN
+ *          "==" operator: if true, not a complex, if a false, it is a complex number
+ *          isnan(): return true if a number is complex
+ */
+/* nullptr:
+ *  NULL is typically defined as (void*), so the function call(NULL) is ambiguous.
+ *  if we replace NULL with nullptr.
+ *  Like NULL, nullptr is implicitly convertible and comparable to any pointer type.
+ *  Unlike NULL, it is not implicitly convertible or comparable to integral types.
+ *  nullptr is convertible to bool
+            // C++ program to demonstrate problem with NULL
+            #include <bits/stdc++.h>
+            using namespace std;
+
+            // function with integer argument
+            int fun(int N)   { cout << "fun(int)"; }
+
+            // Overloaded function with char pointer argument
+            int fun(char* s)  { cout << "fun(char *)"; }
+
+            int main()
+            {
+                // Ideally, it should have called fun(char *),
+                // but it causes compiler error.
+                fun(NULL);//error: call of overloaded 'fun(NULL)' is ambiguous
+            //
+                fun(nullptr);// fun(char*)
+             }
+            //////////////////////program2
+             // This program compiles
+            #include<iostream>
+            using namespace std;
+
+            int main()
+            {
+               int *ptr = nullptr;
+
+               // Below line compiles
+               if (ptr) { cout << "true"; }
+               else { cout << "false"; }
+            }
+            for two nullptr_t, <= and >=, == return true
+            < and >, != return false
  */
