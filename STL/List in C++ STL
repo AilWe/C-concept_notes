@@ -32,13 +32,105 @@
  *          flist1.assign({1, 2, 3});
  *          flist2.assign(5, 10);// 10 10 10 10 10
  *      .push_front(): insert the element at the first position on forward list
+ *          Strong exception guarantee
+ *          If the value passed as argument is not supported by the list, it shows undefined behavior
+ *      .push_back(): push element into a list from the back
+ *          Strong exception guarantee
+ *          If the value passed as argument is not supported by the list, it shows undefined behavior
  *      .emplace_front():
  *      .pop_front: delete the first element of list
+ *          No throw guarantee
+ *          Shows undefined behavior when the list is empty
+ *      .pop_back: pop or remove elements from a list from the back, container size decreased by 1
+ *          No throw guarantee
+ *          Shows undefined behavior when the list is empty
  *      .insert_after(): insert elements at any position in forward list
  *      .emplace_after():insert elements at any position without copy operation
  *      .erase_after(): erase elements from a particular position
  *      .remove(): removes the particular element
- *      .remove_if(): remove under condition
+ *          Show error is the value passed does not match the list type
+ *          Show no exception throw guarantee if the comparison between value and elements of the list feature does not throw any exception
+ *      .remove_if(): remove under condition correspond to true
  *          flist.remove_if([](int x){ return x>20;});
+ *          Show no exception throw guarantee if the predicate function feature does not throw any exception.
+ *
+            // CPP program to illustrate
+            // Implementation of remove_if() function
+            #include <iostream>
+            #include <list>
+            using namespace std;
+
+            // Predicate implemented as a function
+            bool even(const int& value) { return (value % 2) == 0; }
+
+            // Main function
+            int main()
+            {
+                list<int> mylist{ 1, 2, 2, 2, 5, 6, 7 };
+                mylist.remove_if(even);
+                for (auto it = mylist.begin(); it != mylist.end(); ++it)
+                    cout << ' ' << *it;
+            }
  *      .splice_after(): transfer elements from one forward list to other
- */      
+ *          forwardlist1_name.splice_after(position iterator, forwardlist2_name,
+                                    first iterator, last iterator)
+            // C++ program to illustrate
+            // splice_after() function
+            #include <bits/stdc++.h>
+            using namespace std;
+
+            int main()
+            {
+                // initialising the forward lists
+                forward_list<int> list1 = { 10, 20, 30, 40 };
+                forward_list<int> list2 = { 4, 9 };
+
+                // splice_after operation performed
+                // all elements except the first element in list1 is
+                // inserted in list 2 between 4 and 9
+                list2.splice_after(list2.begin(), list1,
+                              list1.begin(), list1.end());
+
+                cout << "Elements are: " << endl;
+
+                // loop to print the elements of second list
+                for (auto it = list2.begin(); it != list2.end(); ++it)
+                    cout << *it << " ";
+
+                return 0;
+            }
+            //Elements are:
+            //4 20 30 40 9
+ *      .merge(): This function is used to merge one forward list with other. If both the lists are sorted then the resulted list returned is also sorted.
+ *      .operator "=": copies one forward list into other; deep copy
+ *      .sort(): This function is used to sort the forward list
+ *      .unique(): deletes the multiple occurrences of a number and returns a forward list with unique elements
+ *          accepts a single parameter which is a binary predicate
+ *      .reverse(): used to reverse the forward list
+ *          No parameter
+ *          No return type
+ *      .swap(): swaps the content of one forward list with other
+ *      .clear(): clears the contents of forward lists.
+ *      .empty(): return true if the list is empty otherwise false.
+ *          It has a no exception throw guarantee
+ *          Shows error when a parameter is passed.
+ *      .front(): reference the first element of the forward list container. It can be used to fetch the first element of a foward list
+ *          If the forward list container is empty, it causes undefined behavior
+ *          It has a no exception throw guarantee if the forward list is not empty
+ *      .back(): reference the last element of the list container. It can be used to fetch the first element from the end of a list
+ *          If the list container is empty, it caused undefined behavior
+ *          It has a no exception throw guarantee if the list is not empty
+ *      .before_begin(): returns a iterator points to a position before the first element of the forward_list
+ *          No parameter
+ *      .max_size(): returns the maximum member of element can be held by forward_list
+ *          No parameter
+ *          Return the maximum numbers that can be stored into the forward_list
+ *      .size(): return the size of the list container or the number of element in the list container
+ *          No exception throw guarantee
+ *          Shows error when a parameter is passed
+ *      .resize(int n, value_type val): resize a list container. It takes a number n as parameter and resizes the list container to contain exactly n elements
+ *          If the list already has more than n element, then the function erases the element from the list except the first n elemet
+ *          If the list contains less than n elements,then the function adds the difference number of element to the ist with their default value
+ *          val: specified the elements added to the list, default added number is 0
+ *          No return value
+ */    
