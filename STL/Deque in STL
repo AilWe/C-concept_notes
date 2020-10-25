@@ -1,0 +1,100 @@
+/* Deque:
+ *  double ended queues are sequence containers to expansion and contraction on both the ends
+ *  It is similar to vectors, but are more efficient in case of insertion and deletion of element
+ *  Unlike vectors, contiguous storage allocation may not be guarantee
+ *  A queue data structure allows insertion only at the end and deletion from the front
+ *
+
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+void showdq(deque <int> g)
+{
+    deque <int> :: iterator it;
+    for (it = g.begin(); it != g.end(); ++it)
+        cout << '\t' << *it;
+    cout << '\n';
+}
+
+int main()
+{
+    deque <int> gquiz;
+    gquiz.push_back(10);
+    gquiz.push_front(20);
+    gquiz.push_back(30);
+    gquiz.push_front(15);
+    cout << "The deque gquiz is : ";
+    showdq(gquiz);
+
+    cout << "\ngquiz.size() : " << gquiz.size();
+    cout << "\ngquiz.max_size() : " << gquiz.max_size();
+
+    cout << "\ngquiz.at(2) : " << gquiz.at(2);
+    cout << "\ngquiz.front() : " << gquiz.front();
+    cout << "\ngquiz.back() : " << gquiz.back();
+
+    cout << "\ngquiz.pop_front() : ";
+    gquiz.pop_front();
+    showdq(gquiz);
+
+    cout << "\ngquiz.pop_back() : ";
+    gquiz.pop_back();
+    showdq(gquiz);
+
+    return 0;
+}
+ */
+/* Methods of deque:
+ * .insert(): inserts and element, and returns an iterator that points to the first of the newly inserted elements
+ * .rbegin(): returns a reverse iterator which points to the last element of the deque
+ * .rend(): returns a reverse iterator points to the position before the beginning of the deque
+ * .cbgin(): returns a constant iterator pointing to the first element of the container--> the iterator cannot be used to modify
+ * .max_size: returns the maximum number of elements that a deque container can hold
+ * .assign(): assign value to the same or different deque container
+ * .resize(): changes the size of the deque
+ * .push_front(): push elements into a deque from the front
+ * .push_back: push elements into a deque from the back
+ * .pop_front(): pop or remove element from a deque from the front
+ * .pop_back(): pop or remove element from a deque from the back
+ * .front(): reference the first element of the deque container
+ * .back: reference the last element of the deque container
+ * .clear(): remove all the elements of the deque container, making its size 0
+ * .erase(position or startPosition, endPostion): remove element from a container from the specified position or range
+ * .empty(): check if the deque container is empty or not
+ * .size(): return the size of the deque container (the number of elements in the deque container)
+ * =: assign new contents to the container by replacing the existing contents
+ * []: reference the element present at the position geiven inside the operator
+ * .at(): reference the element present at the position given as the paremeters
+ * .swap(): swap the contents of one deque with another deque of the same type and size
+ * .begin(): return an iterator pointing to the first element of the deque container
+ * .end(): return an iterator pointing to the last element of the deque container
+ * .emplace_front(): insert a new element at the beginning of the deque
+ * .emplace_back(): insert a new element at the end of the deque
+ */
+//Input  :1, 2, 3, 4, 5, 6, 7, 8, 9
+//Output :1 3 5 7 9
+//Explanation - 2, 4, 6 and 8 which are even are erased from the deque
+// CPP program to illustrate
+// Application of erase() function
+#include <deque>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    deque<int> mydeque{ 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    deque<int>::iterator i;
+    i = mydeque.begin();
+    while (i != mydeque.end()) {
+        if (*i % 2 == 0)
+            mydeque.erase(i);
+        i++;
+    }
+
+    // Printing the deque
+    for (auto it = mydeque.begin(); it != mydeque.end(); ++it)
+        cout << ' ' << *it;
+    return 0;
+} 
