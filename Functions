@@ -1,0 +1,152 @@
+/* Functions
+ *  return_type function_name([ arg1_type arg1_name, ... ]) { code }
+ *  Actual parameter
+ *  Formal parameter
+ *  Two way of passing parameter
+ *      passing by value -> deep copy
+ *      passing by reference -> shallow copy
+ *      Even the void can be stoped with a return;
+ *
+ *  functions can return any type except arrays and function
+ *  void func(void): Empty parameter list
+ *  if called before declaration, the C compiler auto declare it in : int function name();
+ *  Main Function: the entry point for the program
+ *      Type 1:
+ *          int main(){
+ *              ...
+ *              return 0;
+ *          }
+ *      Type 2:
+ *          int main(int argc, char *const argv[]){
+ *              ...
+ *              return 0;
+ *          }
+ */
+/* default argument
+ *  A value provided in a function declaration that is automatically assigned by thhe compiler if the caller of the function
+ *  does not provide a value for the argument
+ *  Function overloading is done along with default values
+ *  The compiler will throw error if ambiguous
+ *  Default arguments are different from constant argument as constant arguments cannot be changed ;
+ *  default arguments can be overwritten if required
+ *  Arguments from calling function to called function are copied from left to right
+ *  once default value is used for an argument in function definition, all subsequent argument must have default value.
+ */
+/* C function argument and return values
+ *  Function can be called either with argument or without arguments.
+ *  May or may not return values to the calling function
+ *  4 function categories:
+ *      1) Function with no argument or no return value:
+ *      2) Function with argument but no return value:
+     *      // C code for function
+            // with argument but no return value
+            #include <stdio.h>
+
+            void function(int, int[], char[]);
+            int main()
+            {
+                int a = 20;
+                int ar[5] = { 10, 20, 30, 40, 50 };
+                char str[30] = "geeksforgeeks";
+                function(a, &ar[0], &str[0]);
+                return 0;
+            }
+
+            void function(int a, int* ar, char* str)
+            {
+                int i;
+                printf("value of a is %d\n\n", a);
+                for (i = 0; i < 5; i++) {
+                    printf("value of ar[%d] is %d\n", i, ar[i]);
+                }
+                printf("\nvalue of str is %s\n", str);
+            }
+        3) Function with no arguments but returns a value
+            // C code for function with no arguments
+            // but have return value
+            #include <math.h>
+            #include <stdio.h>
+
+            int sum();
+            int main()
+            {
+                int num;
+                num = sum();
+                printf("\nSum of two given values = %d", num);
+                return 0;
+            }
+
+            int sum()
+            {
+                int a = 50, b = 80, sum;
+                sum = sqrt(a) + sqrt(b);
+                return sum;
+            }
+        4) Function with arguments and return value:
+ *
+ *  */
+/* Inline function in C++
+ *  function call -> copy the arguments of the function on the stack -> transfer control to the specified function-
+ *  -> CPU execute the function code -> store the function return value in a predefined memory location/register
+ *  -> return control to the calling function ------> Overhead if the execution time of function is less than the switching time from the caller function to callee
+ *  inline function can reduce the function call overhead
+ *  Inline function is expanded in line when it is called
+ *  When inline function called, whole code of the inline function gets inserted or substituted at the point of inline function call at compiler time
+ *  Add inline before the function
+ *      inline return-type function-name(parameters)
+        {
+            // function code
+        }
+    It consumes additional register
+    All functions defined inside the class are implicitly inline. define it outside the class using inline keyword
+    In general, I/O operation should not be defined as inline
+ */
+/* Return from void function
+ *  1) A void function can do return
+ *  2) A void fun() can return another void function
+ *  3) A void() can return a void value
+ */
+/* std::tuple, std::pair, return multiple values from a function using Tuple and Pair in C++
+ * Tuple:
+ *  A tuple is an object capable to hold a collection of element of different type
+ * Pair:
+ *  Couples together a pair of value of different types
+
+#include<bits/stdc++.h>
+using namespace std;
+
+// A Method that returns multiple values using
+// tuple in C++.
+tuple<int, int, char> foo(int n1, int n2)
+{
+    // Packing values to return a tuple
+    return make_tuple(n2, n1, 'a');
+}
+
+// A Method returns a pair of values using pair
+std::pair<int, int> foo1(int num1, int num2)
+{
+    // Packing two values to return a pair
+    return std::make_pair(num2, num1);
+}
+
+int main()
+{
+    int a,b;
+    char cc;
+
+    // Unpack the elements returned by foo
+    tie(a, b, cc) = foo(5, 10);
+
+    // Storing  returned values in a pair
+    pair<int, int> p = foo1(5,2);
+
+    cout << "Values returned by tuple: ";
+    cout << a << " " << b << " " << cc << endl;
+
+    cout << "Values returned by Pair: ";
+    cout << p.first << " " << p.second;
+    return 0;
+}
+ */
+
