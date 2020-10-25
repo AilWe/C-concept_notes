@@ -1,0 +1,167 @@
+/* Constructor in C++
+ *  A member function of a class to initialize objects of a class
+ *  Automatically called when object create.
+ *  Constructor has same name as the class itself
+ *  Constructor don't have return type
+ *  If not specify a constructor, C++ compiler generate a default constructor
+ *  Three types of constructor
+ *      1) Default constructor: does not take any argument. It has no parameters
+     *       construct()
+             {
+                a = 10;
+                b = 20;
+             }
+            If we define our own constructor, compiler does not create the default constructor.
+        2) Parameterized constructor: pass argument to constructor
+            It is used to initialize the various data elements of different object with different value when they are created
+            It is used to overload constructor
+            Point(int x1, int y1)
+            {
+                x = x1;
+                y = y1;
+            }
+        3) Copy constructor: A member function initializes an object using another object of the same class
+     *
+ */
+/* Copy constructor
+ *  A member function initializes an object using another object of the same class
+ *      ClassName (const ClassName &old_obj);
+ *      Point(const Point &p2) {x = p2.x; y = p2.y; }
+ *      When an object of the class is returned by value.
+ *      When an object of the class is passed to a function by value as an argument
+ *      When an object is constructed based on another object of the same class
+ *      When the compiler generates a temporary object
+ *      If we don't define our own copy constructor, the C++ compiler creates a default copy constructor for each class
+ *      which does a member-wise copy between objects.
+ *      We need to define our own copy constructor only if an object has pointers or any runtime allocation of the resource
+ *      like file handle, a network connection
+ *      Deep copy is possible only with user defined copy constructor.
+ *          In user defined copy constructor, we make sure that pointers or references of copied object point to new memory locations.
+ *      Copy constructor vs assignment operator
+ *          Copy constructor: My class t3 = t1; It called when a new object is created from an existing object, as a copy of the existing object.
+ *          Assignment operator: My class t1, t2; t2 = t1; It is called when an already initialized object is assigned a new value from another existing object.
+将普通浅拷贝变为深拷贝
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+class String
+{
+private:
+    char *s;
+    int size;
+public:
+    String(const char *str = NULL); // constructor
+    ~String() { delete [] s;  }// destructor
+    String(const String&); // copy constructor
+    void print() { cout << s << endl; } // Function to print string
+    void change(const char *);  // Function to change
+};
+
+String::String(const char *str)
+{
+    size = strlen(str);
+    s = new char[size+1];
+    strcpy(s, str);
+}
+
+void String::change(const char *str)
+{
+    delete [] s;
+    size = strlen(str);
+    s = new char[size+1];
+    strcpy(s, str);
+}
+
+String::String(const String& old_str)
+{
+    size = old_str.size;
+    s = new char[size+1];
+    strcpy(s, old_str.s);
+}
+
+int main()
+{
+    String str1("GeeksQuiz");
+    String str2 = str1;
+
+    str1.print(); // what is printed ?
+    str2.print();
+
+    str2.change("GeeksforGeeks");
+
+    str1.print(); // what is printed now ?
+    str2.print();
+    return 0;
+}
+//GeeksQuiz
+//GeeksQuiz
+//GeeksQuiz
+//GeeksforGeeks
+
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+class String
+{
+private:
+    char *s;
+    int size;
+public:
+    String(const char *str = NULL); // constructor
+    ~String() { delete [] s;  }// destructor
+    void print() { cout << s << endl; }
+    void change(const char *);  // Function to change
+};
+
+String::String(const char *str)
+{
+    size = strlen(str);
+    s = new char[size+1];
+    strcpy(s, str);
+}
+
+void String::change(const char *str)
+{
+    delete [] s;
+    size = strlen(str);
+    s = new char[size+1];
+    strcpy(s, str);
+}
+
+int main()
+{
+    String str1("GeeksQuiz");
+    String str2 = str1;
+
+    str1.print(); // what is printed ?
+    str2.print();
+
+    str2.change("GeeksforGeeks");
+
+    str1.print(); // what is printed now ?
+    str2.print();
+    return 0;
+}
+    Why argument to a copy constructor must be passed as a reference?
+     A copy constructor is called when an object is passed by value.
+ */
+/* Destructors in C++
+ *  A member function destructs or delete an object
+ *  A destructor is called automatically when the object goes out of scope
+ *      1) the function ends
+ *      2) the program ends
+ *      3) a block containing local variables end
+ *      4) a delete operator is called
+ *   ~className
+ *   Destructors do not take any argument and do not return anything
+ *   There only one destructor in a class
+ *   If we do not write our won destructor in class, compiler creates a default destructor for us.
+ *   When we have dynamically allocated memory or pointer in class. When a class contains a pointer to memory allocated in class,
+ *   we should write a destructor to release memory before the class instance is destroyed--> to avoid memory leak.
+ *   It is good idea to make destructors virtual in base class when we have a virtual function.
+ */
+
