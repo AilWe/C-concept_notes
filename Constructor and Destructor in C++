@@ -164,4 +164,149 @@ int main()
  *   we should write a destructor to release memory before the class instance is destroyed--> to avoid memory leak.
  *   It is good idea to make destructors virtual in base class when we have a virtual function.
  */
+/* WHen should we write our own copy constructor
+ *  C++ compiler provide default copy constructor (and assignment operator) with class
+ *  When we have members with dynamically gets initialized at run time, default copy constructor copies this members with
+ *  address of dynamically allocated memory and not real copy of this memory.
+ *  Now both the objects points to the same memory and changes in one reflects in another object
+ *  When we delete one of this object, other object still points to same memory will be dangling pointer--> memory leak
+ */
+/* When is copy constructor called
+ *  1) When an object of the class is returned by value
+ *  2) When an object of the class is passed to a function by value as argument
+ *  3) When an object is constructed based on another object of the same class
+ *  4) When compiler generates a temporary object
+ */
+/* Initialization of data members
+ *  class variables are initialized in the same order as they appear in the class declaration.
+ *  For program:
+ *  #include<iostream>
+
+    using namespace std;
+
+    class Test {
+      private:
+        int y;
+        int x;
+      public:
+        Test() : x(10), y(x + 10) {}
+        void print();
+    };
+
+    void Test::print()
+    {
+       cout<<"x = "<<x<<" y = "<<y;
+    }
+
+    int main()
+    {
+        Test t;
+        t.print();
+        getchar();
+        return 0;
+    }
+    //the program print correct x, but garbage y, since y is initialized before x as it appears before class declaration.
+    //There are two way to avoid this problem
+    //1) Change the order of declaration
+     private:
+        int x;
+        int y;
+    //2) Change the order of initialization
+        Test() : x(y-10), y(20) {}
+
+ */
+/* Use of explicit keyword
+ *
+        #include <iostream>
+
+        using namespace std;
+
+        class Complex
+        {
+        private:
+            double real;
+            double imag;
+
+        public:
+            // Default constructor
+            Complex(double r = 0.0, double i = 0.0) : real(r), imag(i) {}
+
+            // A method to compare two Complex numbers
+            bool operator == (Complex rhs) {
+               return (real == rhs.real && imag == rhs.imag)? true : false;
+            }
+        };
+
+        int main()
+        {
+            // a Complex object
+            Complex com1(3.0, 0.0);
+
+            if (com1 == 3.0)
+               cout << "Same";
+            else
+               cout << "Not Same";
+             return 0;
+        }
+  * If a class has a constructor can be called with a single argument, then this constructor becomes conversion constructor
+  * bc such a constructor allows conversion of the single argument to the class being constructed.
+  * We can avoid this with explicit, but we have to explicitly typecast it.
+  *
+
+#include <iostream>
+
+using namespace std;
+
+class Complex
+{
+private:
+    double real;
+    double imag;
+
+public:
+    // Default constructor
+    explicit Complex(double r = 0.0, double i = 0.0) : real(r), imag(i) {}
+
+    // A method to compare two Complex numbers
+    bool operator== (Complex rhs) {
+        return (real == rhs.real && imag == rhs.imag)? true : false;
+    }
+};
+
+int main()
+{
+    // a Complex object
+    Complex com1(3.0, 0.0);
+
+    if (com1 == (Complex)3.0)
+        cout << "Same";
+    else
+        cout << "Not Same";
+    return 0;
+}
+ */
+/* When do we use Initializer list
+ *  Point(int i = 0, int j = 0):x(i), y(j) {}
+ *  1) For initialization of non-static const data members:
+ *      No memory is allocated separately for const data member, it is folded in the symbol table
+ *      #include<iostream>
+        using namespace std;
+
+        class Test {
+            const int t;
+        public:
+            Test(int t):t(t) {}  //Initializer list must be used
+            int getT() { return t; }
+        };
+
+        int main() {
+            Test t1(10);
+            cout<<t1.getT();
+            return 0;
+        }
+
+        OUTPUT:
+           10
+      2)未完待续
+*/
 
