@@ -1,0 +1,27 @@
+/* Stack in C++
+ *  A type of container adaptor with LIFO (Last In First Out)
+ *  A new element is added at one end (top), an element is removed from that end only.
+ *  .empty(): returns whether the stack is empty
+ *      Shows error if parameter is passed
+ *      Shows no exception throw guarantee
+ *      Time complexity: O(1)
+ *  .size(): returns the size of the stack
+ *      Shows error if a parameter is passed
+ *      No exception throw guarantee
+ *      Time complexity: O(1)
+ *  .top(): returns a reference to the top most element of the stack
+ *      No parameters.
+ *      if the stack container is empty, it causes undefined behavior
+ *      No exception throw guarantee
+ *      Time complexity: O(1)
+ *  .push(g): Adds the element 'g' at the top of the stack
+ *      The size of the stack is increased by 1
+ *      Shows error if the value passed does not match the stack type.
+ *      Shows no exception throw guarantee
+ *      Time complexity: O(1)
+ *  .pop(): Delete the top most element of the stack
+ *      The size of the stack is decreased by 1
+ *      Shows error if a parameter is passed
+ *      Shows no exception throw guarantee
+ *      Time complexity: O(1)
+ */
