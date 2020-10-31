@@ -1,0 +1,11 @@
+/* I/O
+ * I/O redirection in C++
+ *  Open a file
+ *  FILE * freopen ( const char * filename, const char * mode, FILE * stream );
+ *  Redirect the stdout to a textfile
+ *  freopen ("text_file.txt", "w", stdout);
+ *  streams object are three types:
+ *      istream:
+ *      ostream:
+ *      iostream:
+ */
