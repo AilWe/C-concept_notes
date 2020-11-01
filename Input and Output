@@ -6,6 +6,48 @@
  *  freopen ("text_file.txt", "w", stdout);
  *  streams object are three types:
  *      istream:
+ *       Steam object of this type can only perform input operation from the stream
  *      ostream:
+ *          used for output operations
  *      iostream:
+ *          Used for both input and output operations
+ *          data -> buffer -> output
+ *          redirect a stream A to a stream B:
+ *              Get the stream buffer of A and store it somewhere
+ *              Set the stream buffer of A to the stream buffer of B
+ *              If needed reset the stream buffer of A to its previous stream buffer
+ *          1) stream_object.rdbuf(): Returns pointer to the stream buffer of stream_object
+            2) stream_object.rdbuf(streambuf * p): Sets the stream buffer to the object pointed by p
  */
+// Cpp program to redirect cout to a file
+#include <fstream>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+    fstream file;
+    file.open("cout.txt", ios::out);
+    string line;
+
+    // Backup streambuffers of  cout
+    streambuf* stream_buffer_cout = cout.rdbuf();
+    streambuf* stream_buffer_cin = cin.rdbuf();
+
+    // Get the streambuffer of the file
+    streambuf* stream_buffer_file = file.rdbuf();
+
+    // Redirect cout to file
+    cout.rdbuf(stream_buffer_file);
+
+    cout << "This line written to file" << endl;
+
+    // Redirect cout back to screen
+    cout.rdbuf(stream_buffer_cout);
+    cout << "This line is written to screen" << endl;
+
+    file.close();
+    return 0;
+}
