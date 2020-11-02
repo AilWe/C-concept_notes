@@ -1,0 +1,440 @@
+/* Arrays in C++
+ *  Stored at contiguous memory locations and elements can be accessed randomly using indices of an array.
+ *  Stored similar type of element
+ *  eg. int, float, double, char, struct, pointer
+ *  1) Array declaration by specifying size
+ *      int arr1[10];
+ *  2) Array declaration by initializing elements
+ *      int arr[] = {10, 20, 30, 40};
+ *  3) Array declaration by specifying size and initializing elements
+ *      int arr[6] = {10, 20. 30. 40};
+ *  Advantages of an array
+ *      1. Random access of element using array index
+ *      2. Use of less line of code as it creates a single array of multiple elements
+ *      3. Easy access to all the element
+ *      4. Traversal through the array becomes easy using a single loop
+ *      5. Sorting becomes easy as it can be accomplished by writing less line of code
+ *  Disadvantage:
+ *      1. Not dynamical
+ *      2. Insertion and deletion can by costly
+ *  Array name indicate the address of first element as pointer
+ */
+/* Array of strings in C++
+ * In C++, a string is 1D array of character
+ * 1) Using pointer char *color = "Red";
+ *  These strings are constant and their contents cannot be changed. Bc string literals exist in a read-only area of memory,
+ *  we must specify "const" here to prevent unwanted access
+ * 2) Using 2D array
+ *  char color[4][10] = {"Blue", "Red", "Orange", "Yellow"};
+ * 3) Using the string class
+ *  string color[4][10] = {"Blue", "Red", "Orange", "Yellow"};
+ * 4) Using the vector class:
+ *  vector <string> color = {"Blue", "Red", "Orange", "Yellow"};
+ *  Vector are dynamically arrays -> allow add and remove items at any time.
+ * 5) Using the array class:
+ *  array <string, 4> color = {"Blue", "Red", "Orange", "Yellow"};
+ *  Fixed-size array
+ */
+/* Multidimensional array in C++
+ *  Two dimensional array:
+    int two_d[10][20];
+
+    Three dimensional array:
+    int three_d[10][20][30];
+ * 2D array
+ *  Initializing:
+ *      int x[3][4] = {0, 1 ,2 ,3 ,4 , 5 , 6 , 7 , 8 , 9 , 10 , 11};
+ *      int x[3][4] = {{0,1,2,3}, {4,5,6,7}, {8,9,10,11}};
+ * 3D array
+ *  Initializing:
+ *      int x[2][3][4] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                 11, 12, 13, 14, 15, 16, 17, 18, 19,
+                 20, 21, 22, 23};
+        int x[2][3][4] = {
+                            { {0,1,2,3}, {4,5,6,7}, {8,9,10,11} },
+                            { {12,13,14,15}, {16,17,18,19}, {20,21,22,23} }
+                          };
+ */
+/* Raw string literal in C++
+ *  string string2 = R"(Geeks.\nFor.\nGeeks.\n)";
+ *      \\Geeks.\nFor.\nGeeks.\n
+ */
+/* Counts of distinct consecutive sub-string of length two using C++ STL
+ *  Given a string the task is to print all distinct sub-strings of length two in the given string.
+ *  All substrings should be printed in lexicographical order.
+ *  Input: str = "abcab"
+    Output: ab-2
+            bc-1
+            ca-1
+
+    Input: str = "xyz"
+    Output: xy-1
+            yz-1
+    Time complexity of underdered_map() operations is O(1) while that of map is O(Log n)
+    // C++ STL based program to print all distinct
+    // substrings of size 2 and their counts.
+    #include<bits/stdc++.h>
+    using namespace std;
+
+    void printDistinctSubStrs(string str)
+    {
+        // Create a map to store unique substrings of
+        // size 2
+        map<pair<char,char>, int> dPairs;
+
+        // Count occurrances of all pairs
+        for (int i=0; i<str.size()-1; i++)
+            dPairs[make_pair(str[i], str[i+1])]++;
+
+        // Traverse map to print sub-strings and their
+        // counts.
+        cout << "Distinct sub-strings with counts:\n";
+        for (auto it=dPairs.begin(); it!=dPairs.end(); it++)
+            cout << it->first.first << it->first.second
+                 << "-" << it->second << " ";
+    }
+
+    // Driver code
+    int main()
+    {
+        string str = "abcacdcacabacaassddssklac";
+        printDistinctSubStrs(str);
+        return 0;
+    }
+ */
+/* Converting string to number and vice-versa in C++
+ * 1) Converting string to numbers
+ *      1) Using stringstream class or sscanf()
+ *      2) String conversion using stoi() and atoi()
+ *      3) Using boost lexical cast
+ *          lexical_cast("string"): convert a string to number
+            //C++ code to demonstrate working of lexical_cast()
+            #include<iostream>
+            #include <boost/lexical_cast.hpp>// for lexical_cast()
+            #include <string> // for string
+            using namespace std;
+            int main()
+            {
+               string str = "5";
+               string str1 = "6.5";
+
+               // Initializing f_value with casted float
+               // f_value is 6.5
+               float f_value = boost::lexical_cast<float>(str1);
+
+               // Initializing i_value with casted int
+               // i_value is 5
+               int i_value = boost::lexical_cast<int>(str);
+
+               //Displaying casted values
+               cout << "The float value after casting is : ";
+               cout << f_value <<endl;
+               cout << "The int value after casting is : ";
+               cout << i_value <<endl;
+
+               return 0;
+            }
+ * 2) Converting number to string
+ *      1) Using string streams
+ *          str1 << nums;
+ *          string geek = str1.str();
+ *      2) Using to_string()
+            // Conversion of int into string using
+            // to_string()
+            string stri = to_string(i_val);
+
+            // Conversion of float into string using
+            // to_string()
+            string strf = to_string(f_val);
+        3) Using boost lexical cast
+           // lexical_cast() converts a float into string
+           string strf = boost::lexical_cast<string>(f_val);
+
+           // lexical_cast() converts a int into string
+           string stri = boost::lexical_cast<string>(i_val);
+ */
+/* Find size of array in C++ without using sizeof
+ * 1) Writing our own sizeof
+     *  // C++ program to find size of an array by writing our
+        // sizeof
+        #include <bits/stdc++.h>
+        using namespace std;
+
+        // User defined sizeof macro
+        # define my_sizeof(type) ((char *)(&type+1)-(char*)(&type))
+
+        int main()
+        {
+            int  arr[] = {1, 2, 3, 4, 5, 6};
+            int size = my_sizeof(arr)/my_sizeof(arr[0]);
+
+            cout << "Number of elements in arr[] is "
+                 << size;
+
+            return 0;
+        }
+ * 2) Using a pointer hack
+ *      int size = *(&arr + 1) - arr;
+ *      &arr ==> Pointer to an array of 6 elements.
+
+        (&arr + 1) ==> Address of 6 integers ahead as
+                       pointer type is pointer to array
+                       of 6 integers.
+
+        *(&arr + 1) ==> Same address as (&arr + 1), but
+                        type of pointer is "int *".
+
+        *(&arr + 1) - arr ==> Since *(&arr + 1) points
+                           to the address 6 integers
+                           ahead of arr, the difference
+                           between two is 6.
+ */
+/* How to quickly reverse a string in C++
+ *  1) Wring own reverse function by swapping
+        // A Simple C++ program to reverse a string
+        #include <bits/stdc++.h>
+        using namespace std;
+
+        // Function to reverse a string
+        void reverseStr(string& str)
+        {
+            int n = str.length();
+
+            // Swap character starting from two
+            // corners
+            for (int i = 0; i < n / 2; i++)
+                swap(str[i], str[n - i - 1]);
+        }
+
+        // Driver program
+        int main()
+        {
+            string str = "geeksforgeeks";
+            reverseStr(str);
+            cout << str;
+            return 0;
+        }
+ *  2) Using inbuilt "reverse" function
+ *      reverse(str.begin(), str.end());
+ *  3) Print reverse
+ *      // C++ program to print reverse of a string
+        #include <bits/stdc++.h>
+        using namespace std;
+
+        // Function to reverse a string
+        void reverse(string str)
+        {
+           for (int i=str.length()-1; i>=0; i--)
+              cout << str[i];
+        }
+
+        // Driver code
+        int main(void)
+        {
+            string s = "GeeksforGeeks";
+            reverse(s);
+            return (0);
+        }
+    4) Getting reverse of a const string
+        // C++ program to get reverse of a const string
+        #include <bits/stdc++.h>
+        using namespace std;
+
+        // Function to reverse string and return
+        // reverse string pointer of that
+        char* reverseConstString(char const* str)
+        {
+            // find length of string
+            int n = strlen(str);
+
+            // create a dynamic pointer char array
+            char *rev = new char[n+1];
+
+            // copy of string to ptr array
+            strcpy(rev, str);
+
+            // Swap character starting from two
+            // corners
+            for (int i=0, j=n-1; i<j; i++,j--)
+                swap(rev[i], rev[j]);
+
+            // return pointer of the reversed string
+            return rev;
+        }
+
+        // Driver code
+        int main(void)
+        {
+            const char *s = "GeeksforGeeks";
+            printf("%s", reverseConstString(s));
+            return (0);
+        }
+    5) Reverse string using the constructor:
+        Passing reverse iterators to the constructor return us a reversed string
+            // A simple C++ program to reverse string using constructor
+            #include <bits/stdc++.h>
+            using namespace std;
+            int main(){
+
+                string str = "GeeksforGeeks";
+
+                //Use of reverse iterators
+                string rev = string(str.rbegin(),str.rend());
+
+                cout<<rev<<endl;
+                return 0;
+            }
+ */
+/* Tokenizing a string
+ *  splitting a string with respect to some delimiter
+ *  1) Using stringstream
+ *  // Tokenizing a string using stringstream
+    #include <bits/stdc++.h>
+
+    using namespace std;
+
+    int main()
+    {
+
+        string line = "GeeksForGeeks is a must try";
+
+        // Vector of string to save tokens
+        vector <string> tokens;
+
+        // stringstream class check1
+        stringstream check1(line);
+
+        string intermediate;
+
+        // Tokenizing w.r.t. space ' '
+        while(getline(check1, intermediate, ' '))
+        {
+            tokens.push_back(intermediate);
+        }
+
+        // Printing the token vector
+        for(int i = 0; i < tokens.size(); i++)
+            cout << tokens[i] << '\n';
+    }
+    2) Using strtok()
+        char * strtok(char str[], const char *delims);
+        // C/C++ program for splitting a string
+        // using strtok()
+        #include <stdio.h>
+        #include <string.h>
+
+        int main()
+        {
+            char str[] = "Geeks-for-Geeks";
+
+            // Returns first token
+            char *token = strtok(str, "-");
+
+            // Keep printing tokens while one of the
+            // delimiters present in str[].
+            while (token != NULL)
+            {
+                printf("%s\n", token);
+                token = strtok(NULL, "-");
+            }
+
+            return 0;
+        }
+ *  3) Using strtok_r()
+ *      char *strtok_r(char *str, const char *delim, char **saveptr);
+ *      // C/C++ program to demonstrate working of strtok_r()
+        // by splitting string based on space character.
+        #include<stdio.h>
+        #include<string.h>
+
+        int main()
+        {
+            char str[] = "Geeks for Geeks";
+            char *token;
+            char *rest = str;
+
+            while ((token = strtok_r(rest, " ", &rest)))
+                printf("%s\n", token);
+
+            return(0);
+        }
+    4) Using std::sregex_token_iterator
+        // CPP program for above approach
+        #include <iostream>
+        #include <regex>
+        #include <string>
+        #include <vector>
+         * @brief Tokenize the given vector
+           according to the regex
+         * and remove the empty tokens.
+         *
+         * @param str
+         * @param re
+         * @return std::vector<std::string>
+         *
+        std::vector<std::string> tokenize(
+                const std::string str,
+                const std::regex re)
+        {
+            std::sregex_token_iterator it{ str.begin(),
+                                           str.end(), re, -1 };
+            std::vector<std::string> tokenized{ it, {} };
+
+            // Additional check to remove empty strings
+            tokenized.erase(
+                    std::remove_if(tokenized.begin(),
+                                   tokenized.end(),
+                                   [](std::string const& s) {
+                                       return s.size() == 0;
+                                   }),
+                    tokenized.end());
+
+            return tokenized;
+        }
+
+        // Driver Code
+        int main()
+        {
+            const std::string str = "Break string
+            a,spaces,and,commas";
+            const std::regex re(R"([\s|,]+)");
+
+            // Function Call
+            const std::vector<std::string> tokenized =
+                    tokenize(str, re);
+
+            for (std::string token : tokenized)
+                std::cout << token << std::endl;
+            return 0;
+        }
+
+ */
+/* getline() function and character array
+ *  // (buffer, stream_size, delimiter)
+    istream& getline(char*, int size, char='\n')
+
+    // The delimiter character is considered as '\n'
+    istream& getline(char*, int size)
+     1. Extracts character up to the delimiter
+     2. Stores the chars in the buffer
+     3. Maximum number of character extracted is size - 1
+    // C++ program to show the getline() with
+    // character array
+    #include <iostream>
+    using namespace std;
+
+    int main()
+    {
+        char str[20];
+        cout << "Enter Your Name::";
+
+        // see the use of getline() with array
+        // str also replace the above statement
+        // by cin >> str and see the difference
+        // in output
+        cin.getline(str, 20);
+
+        cout << "\nYour Name is:: " << str;
+        return 0;
+    }
+ */
