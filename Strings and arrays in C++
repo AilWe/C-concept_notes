@@ -438,3 +438,95 @@
         return 0;
     }
  */
+/* Converting string to char array in C++
+ *  1) c_str() and strcpy()
+ *      c_str() is used to return a pointer to an array that contains a null terminated sequence of character representing the current value of the string
+ *      const char* c_str() const;
+ *
+        // CPP program to convert string
+        // to char array
+        #include <bits/stdc++.h>
+
+        using namespace std;
+
+        // driver code
+        int main()
+        {
+            // assigning value to string s
+            string s = "geeksforgeeks";
+
+            int n = s.length();
+
+            // declaring character array
+            char char_array[n + 1];
+
+            // copying the contents of the
+            // string to char array
+            strcpy(char_array, s.c_str());
+
+            for (int i = 0; i < n; i++)
+                cout << char_array[i];
+
+            return 0;
+        }
+ *  2)
+ *      // CPP program to convert string
+        // to char array
+        #include <iostream>
+        #include <string.h>
+
+        using namespace std;
+
+        // driver code
+        int main()
+        {
+            // assigning value to string s
+            string s("geeksforgeeks");
+            // declaring character array : p
+            char p[s.length()];
+
+            int i;
+            for (i = 0; i < sizeof(p); i++) {
+                p[i] = s[i];
+                cout << p[i];
+            }
+            return 0;
+        }
+ * 3) Directly assign the address of 1st char of the string to a pointer to char
+ *      // CPP program for the above approach
+        #include <cstring>
+        #include <iostream>
+        #include <string>
+        using namespace std;
+
+        // Driver Code
+        int main()
+        {
+            char* char_arr;
+            string str_obj("GeeksForGeeks");
+            char_arr = &str_obj[0];
+            cout << char_arr;
+            return 0;
+        }
+ */
+/* C++ string class and its application
+ * .clear(): delete all character fromt he string
+ * .length() and .size(): return the length of string
+ * .front(): first character
+ * .back(): last character
+ * .c_str: returns null terminated char array version of string;
+ *         char* charstr = str6.c_str();
+ * .append(str, nth, numberofchar): append the argument string at the end of string
+ *          += is slower than append bc each time + is called, a new string with new buffer is made
+ * .find(): return the first occurrence of the index of substr
+ * .find_first_of("string"): search the string for the first character
+ * .find_last_of(str): search the string for the last character
+ * .rfind(): search the string for the last occurrence of the substring
+ * .substr(nth, length): return the substring from n, length
+ * .begin(), .end(): iterator of string
+ * .replace(a, b, str): replaces b characters from a index by str
+ * .compare(string_to_compare): used to compare two strings. Returns the difference of second string and first string in integer
+ * .insert(pos_to_begin, string_to_insert): this function inserts the given substring in the string
+ * .empty(): test whether the string iss empty
+ */
+
